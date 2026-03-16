@@ -6,187 +6,812 @@
     <title>Golden Hand Caregivers | Professional Care Service</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Grid background matching the uploaded image */
+        .bg-grid {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(to right, #e5e7eb 1px, transparent 1px), 
+                linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
-    <nav class="bg-white shadow-md fixed w-full z-10 top-0">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-amber-600"><i class="fas fa-hands-holding-circle"></i> GOLDEN HAND</span>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('main-landing-page')">
+                    <span class="text-2xl font-extrabold text-[#2C4A3B] flex items-center gap-2 tracking-wide">
+                        <i class="fas fa-hands-holding-circle text-[#82B366]"></i> 
+                        GOLDEN HAND
+                    </span>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-gray-600 hover:text-amber-600">Home</a>
-                    <a href="#services" class="text-gray-600 hover:text-amber-600">Services</a>
-                    <a href="#features" class="text-gray-600 hover:text-amber-600">Why Us</a>
-                    <a href="#pricing" class="text-gray-600 hover:text-amber-600 font-semibold">Pricing</a>
-                    <a href="#contact" class="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">Contact Us</a>
+                <div class="hidden md:flex items-center space-x-5 text-[13px] font-bold text-[#2C4A3B] uppercase tracking-wider">
+                    <a href="#home" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Home</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="#services" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Services</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="#features" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Why Us</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="#pricing" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Pricing</a>
+                    
+                    <a href="#contact" onclick="showPage('main-landing-page')" class="ml-4 bg-[#C19B54] text-white px-5 py-2 hover:bg-[#a88648] transition rounded-sm">
+                        [CONTACT US]
+                    </a>
+
+                    <!-- New Login/Register Button -->
+                    <a href="#" onclick="showPage('auth-page'); setAuthMode('login');" class="ml-2 flex items-center gap-2 text-[#2C4A3B] border-2 border-[#2C4A3B] px-4 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
+                        <i class="fas fa-user-circle text-lg"></i> LOGIN / REGISTER
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="pt-24 pb-12 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-8 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Compassionate Care from <br><span class="text-amber-500">Golden Hands</span></h1>
-                <p class="text-lg mb-8 text-gray-300">Professional caregiving platform connecting you with verified caregivers for elderly, patient, and baby care.</p>
-                <div class="flex space-x-4">
-                    <a href="#pricing" class="bg-amber-500 text-slate-900 font-bold px-6 py-3 rounded-lg hover:bg-amber-400 transition">Get a Quote</a>
-                </div>
-            </div>
-            <div class="md:w-1/2 text-center">
-                <img src="https://img.freepik.com/free-photo/nurse-measuring-patient-blood-pressure_23-2148962326.jpg" alt="Caregiver Service" class="rounded-lg shadow-2xl mx-auto w-4/5 border-4 border-amber-500">
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="py-16">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-4 text-slate-800">Our Services</h2>
-            <p class="text-gray-600 mb-12">Select the best care category for your loved ones.</p>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-amber-500">
-                    <div class="text-amber-600 text-4xl mb-4"><i class="fas fa-wheelchair"></i></div>
-                    <h3 class="text-xl font-bold mb-2">Elderly Care</h3>
-                    <p class="text-gray-600">Dedicated support for seniors including daily duty summary, medicine reminders, and companionship.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-amber-500">
-                    <div class="text-amber-600 text-4xl mb-4"><i class="fas fa-user-nurse"></i></div>
-                    <h3 class="text-xl font-bold mb-2">Patient Care</h3>
-                    <p class="text-gray-600">Professional assistance for recovering patients with health monitoring and verified caregivers.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-amber-500">
-                    <div class="text-amber-600 text-4xl mb-4"><i class="fas fa-baby-carriage"></i></div>
-                    <h3 class="text-xl font-bold mb-2">Baby Care</h3>
-                    <p class="text-gray-600">Trusted babysitting services ensuring safety and care for your little ones while you are away.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" class="py-16 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <h2 class="text-3xl font-bold mb-6 text-slate-800">Safety & Reliability First</h2>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-bold">Verified Caregivers</h4>
-                                <p class="text-sm text-gray-600">Strict KYC, NIC verification, and Police Reports are mandatory for all our staff.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-bold">Real-Time Tracking</h4>
-                                <p class="text-sm text-gray-600">Monitor attendance (Check-in/Out) and live location of your assigned caregiver.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-bold">Secure Payments</h4>
-                                <p class="text-sm text-gray-600">Transparent billing, invoice downloads, and secure online payment options via PayHere.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="md:w-1/2 bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold mb-4 text-center">How It Works</h3>
-                    <div class="flex flex-col space-y-4">
-                        <div class="p-4 bg-amber-50 rounded text-center">1. Register / Login (OTP)</div>
-                        <div class="p-4 bg-amber-100 rounded text-center">2. Select Category & Time</div>
-                        <div class="p-4 bg-amber-50 rounded text-center">3. Secure Payment</div>
-                        <div class="p-4 bg-amber-100 rounded text-center">4. Caregiver Assigned</div>
+    <!-- MAIN LANDING PAGE CONTAINER -->
+    <div id="main-landing-page">
+        <!-- Hero Section -->
+        <section id="home" class="pt-32 pb-20 bg-grid relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center relative z-10">
+                <div class="md:w-1/2 mb-12 md:mb-0 md:pr-10">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-[#2C4A3B] uppercase tracking-wide">
+                        Compassionate Care from <br><span class="text-[#2C4A3B]">Golden Hands</span>
+                    </h1>
+                    <p class="text-lg mb-8 text-gray-700 font-medium leading-relaxed max-w-lg">
+                        Professional caregiving platform connecting you with verified caregivers for elderly, patient, and baby care.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#pricing" class="bg-[#2C4A3B] text-white font-bold px-7 py-3 hover:bg-[#1f352a] transition uppercase text-sm tracking-wider rounded-sm shadow-md">
+                            [GET A QUOTE]
+                        </a>
                     </div>
                 </div>
+                <div class="md:w-1/2 text-center relative mt-8 md:mt-0">
+                    <!-- Golden square offset border matching the image style -->
+                    <div class="absolute inset-0 border-4 border-[#C19B54] transform translate-x-6 -translate-y-6 rounded-sm w-4/5 mx-auto h-full -z-10"></div>
+                    <img src="https://img.freepik.com/free-photo/nurse-measuring-patient-blood-pressure_23-2148962326.jpg" alt="Caregiver Service" class="shadow-xl mx-auto w-4/5 rounded-sm object-cover relative z-10">
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="pricing" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="bg-amber-50 rounded-2xl p-8 md:p-12 text-center border border-amber-100 shadow-sm">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Transparent Pricing Packages</h2>
-                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                    We understand that every patient has unique needs. Whether you need short-term assistance or long-term 24/7 care, we have flexible packages.
-                </p>
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h2 class="text-2xl font-extrabold mb-3 text-[#2C4A3B] uppercase tracking-widest">Our Services</h2>
+                <p class="text-gray-600 mb-12 font-medium">Select the best care category for your loved ones.</p>
                 
-                <div class="grid md:grid-cols-3 gap-6 mb-10 max-w-4xl mx-auto">
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-lg text-amber-600">Daily Basis</h4>
-                        <p class="text-gray-500 text-sm mt-2">Perfect for short-term needs or emergencies.</p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
+                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-wheelchair"></i></div>
+                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Elderly Care</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed text-center">Dedicated support for seniors including daily duty summary, medicine reminders, and companionship.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-lg text-amber-600">Weekly Package</h4>
-                        <p class="text-gray-500 text-sm mt-2">Recovering patients needing observation.</p>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
+                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-user-nurse"></i></div>
+                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Patient Care</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed text-center">Professional assistance for recovering patients with health monitoring and verified caregivers.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-lg text-amber-600">Monthly Subscription</h4>
-                        <p class="text-gray-500 text-sm mt-2">Best value for long-term elderly care.</p>
+
+                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
+                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-baby-carriage"></i></div>
+                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Baby Care</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed text-center">Trusted babysitting services ensuring safety and care for your little ones while you are away.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 bg-grid border-t border-gray-100">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-extrabold text-[#2C4A3B] uppercase tracking-widest">Why Golden Hand?</h2>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-12 justify-center">
+                    <!-- Safety & Reliability -->
+                    <div class="md:w-1/2 bg-white p-10 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-xl font-bold mb-8 text-[#2C4A3B] uppercase text-center">Safety & Reliability First</h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Verified Caregivers</h4>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Strict KYC, NIC verification, and Police Reports are mandatory for all our staff.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Real-Time Tracking</h4>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Monitor attendance (Check-in/Out) and live location of your assigned caregiver.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Secure Payments</h4>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Transparent billing, invoice downloads, and secure online payment options via PayHere.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- How It Works -->
+                    <div class="md:w-1/2 bg-white p-10 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-xl font-bold mb-8 text-[#2C4A3B] uppercase text-center">How It Works</h3>
+                        <div class="flex flex-col space-y-5">
+                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition cursor-pointer" onclick="showPage('auth-page')">1. Register / Login (OTP)</div>
+                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">2. Select Category & Time</div>
+                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">3. Secure Payment</div>
+                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">4. Caregiver Assigned</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-extrabold text-[#2C4A3B] uppercase tracking-widest mb-4">Transparent Pricing Packages</h2>
+                    <p class="text-md text-gray-600 max-w-2xl mx-auto font-medium leading-relaxed">
+                        We understand that every patient has unique needs. Whether you need short-term assistance or long-term 24/7 care, we have flexible packages.
+                    </p>
+                </div>
+                    
+                <div class="grid md:grid-cols-3 gap-6 mb-16 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
+                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Daily Basis</h4>
+                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Perfect for short-term needs or emergencies.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
+                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Weekly Package</h4>
+                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Recovering patients needing observation.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
+                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Monthly Subscription</h4>
+                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Best value for long-term elderly care.</p>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <p class="text-xl font-medium text-slate-800 mb-6">Contact us now for a customized quotation</p>
+                    <p class="text-lg font-bold text-[#2C4A3B] mb-8 uppercase tracking-wider">Contact us now for a customized quotation</p>
                     
                     <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                        <div class="bg-white px-8 py-4 rounded-xl shadow-md flex items-center gap-4 border-l-4 border-amber-500 w-full md:w-auto justify-center">
-                            <i class="fas fa-phone-volume text-2xl text-amber-600"></i>
+                        <div class="bg-white px-8 py-5 rounded-sm shadow-sm flex items-center gap-5 border border-gray-200 border-l-4 border-l-[#C19B54] w-full md:w-auto justify-center hover:shadow-md transition">
+                            <i class="fas fa-phone-volume text-3xl text-[#C19B54]"></i>
                             <div class="text-left">
-                                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Call for Rates</p>
-                                <a href="tel:+94760059709" class="text-xl font-bold text-slate-900 hover:text-amber-600 transition">+94 76 005 9709</a>
+                                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1">Call for Rates</p>
+                                <a href="tel:+94760059709" class="text-xl font-bold text-[#162842] hover:text-[#C19B54] transition">+94 76 005 9709</a>
                             </div>
                         </div>
 
-                        <div class="bg-white px-8 py-4 rounded-xl shadow-md flex items-center gap-4 border-l-4 border-amber-500 w-full md:w-auto justify-center">
-                            <i class="fas fa-envelope-open-text text-2xl text-amber-600"></i>
+                        <div class="bg-white px-8 py-5 rounded-sm shadow-sm flex items-center gap-5 border border-gray-200 border-l-4 border-l-[#C19B54] w-full md:w-auto justify-center hover:shadow-md transition">
+                            <i class="fas fa-envelope-open-text text-3xl text-[#C19B54]"></i>
                              <div class="text-left">
-                                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Email for Quote</p>
-                                <a href="mailto:goldenhandcaregivers@gmail.com" class="text-lg font-bold text-slate-900 hover:text-amber-600 transition">goldenhandcaregivers@gmail.com</a>
+                                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1">Email for Quote</p>
+                                <a href="mailto:goldenhandcaregivers@gmail.com" class="text-lg font-bold text-[#162842] hover:text-[#C19B54] transition">goldenhandcaregivers@gmail.com</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer id="contact" class="bg-slate-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-xl font-bold mb-4 text-amber-500">GOLDEN HAND CAREGIVERS</h3>
-                <p class="text-gray-400">Providing trusted caregiving services with a focus on safety, professionalism, and compassion.</p>
+        <!-- Footer Section -->
+        <footer id="contact" class="bg-[#162842] text-white py-16">
+            <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12 md:gap-8">
+                <div>
+                    <h3 class="text-xl font-extrabold mb-5 text-[#C19B54] flex items-center gap-2">
+                        <i class="fas fa-hands-holding-circle"></i> GOLDEN HAND CAREGIVERS
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed pr-4">Providing trusted caregiving services with a focus on safety, professionalism, and compassion.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-5 text-white uppercase tracking-wider">Contact Us</h3>
+                    <ul class="text-gray-400 space-y-4 text-sm">
+                        <li class="flex items-center"><i class="fas fa-phone mr-3 text-[#C19B54]"></i> +94 76 005 9709</li> 
+                        <li class="flex items-center"><i class="fas fa-envelope mr-3 text-[#C19B54]"></i> goldenhandcaregivers@gmail.com</li>
+                        <li class="flex items-start"><i class="fas fa-map-marker-alt mr-3 mt-1 text-[#C19B54]"></i> <span>No 200/108, Peradeniya Road, <br>Kandy</span></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-5 text-white uppercase tracking-wider">Legal</h3>
+                    <ul class="text-gray-400 space-y-3 text-sm">
+                        <li><a href="terms.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Terms & Conditions</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Privacy Policy</a></li>
+                        <li><a href="refund.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Refund Policy</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Contact Us</h3>
-                <ul class="text-gray-400 space-y-2">
-                    <li><i class="fas fa-phone mr-2"></i> +94 76 005 9709</li> 
-                    <li><i class="fas fa-envelope mr-2"></i> goldenhandcaregivers@gmail.com</li>
-                    <li><i class="fas fa-map-marker-alt mr-2"></i> No 200/108, Peradeniya Road, Kandy</li>
-                </ul>
+            
+            <div class="border-t border-gray-700/50 mt-12 pt-8 text-center px-4">
+                <p class="text-gray-500 text-sm">&copy; 2024 Golden Hand Caregivers. All rights reserved.</p>
+                <p class="mt-2 text-xs text-gray-600">Powered by <span class="text-[#C19B54] font-semibold">PostKina Technologies</span></p>
             </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Legal</h3>
-                <ul class="text-gray-400 space-y-2">
-                    <li><a href="terms.html" class="hover:text-amber-500">Terms & Conditions</a></li>
-                    <li><a href="privacy.html" class="hover:text-amber-500">Privacy Policy</a></li>
-                    <li><a href="refund.html" class="hover:text-amber-500">Refund Policy</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-            <p class="text-gray-500 text-sm">&copy; 2024 Golden Hand Caregivers. All rights reserved.</p>
-            <p class="mt-2 text-xs text-gray-600">Powered by <span class="text-gray-400 font-semibold">PostKina Technologies</span></p>
-        </div>
-    </footer>
+        </footer>
+    </div>
+    <!-- END MAIN LANDING PAGE CONTAINER -->
 
+
+    <!-- AUTHENTICATION PAGE (LOGIN / REGISTER) -->
+    <div id="auth-page" class="hidden pt-28 pb-20 bg-grid min-h-screen fade-in">
+        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-[#2C4A3B] uppercase tracking-wide">GOLDEN HAND</h2>
+                <p class="text-[#82B366] font-bold mt-1">CAREGIVERS</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button id="tab-login" onclick="setAuthMode('login')" class="flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition">Sign In</button>
+                <button id="tab-register" onclick="setAuthMode('register')" class="flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                <p class="text-center text-gray-500 mb-4">Welcome Back!</p>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
+                        <input type="email" id="login-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
+                        <input type="password" id="login-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <a href="#" class="text-sm text-[#82B366] font-bold hover:underline">Forgot Password?</a>
+                </div>
+                <button type="submit" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md">Sign In</button>
+                
+                <div class="text-center text-gray-400 my-4">OR</div>
+
+                <button type="button" onclick="simulateGoogleLogin()" class="w-full bg-white border-2 border-[#2C4A3B] text-[#2C4A3B] font-bold py-3 rounded hover:bg-gray-50 transition shadow-sm flex justify-center items-center gap-2">
+                    <i class="fab fa-google text-red-500"></i> Sign in with Google
+                </button>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-5 hidden">
+                <p class="text-center text-gray-500 mb-4">Join Golden Hand Caregivers today</p>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <div class="relative">
+                        <i class="fas fa-person absolute left-3 top-3 text-[#2C4A3B]"></i>
+                        <input type="text" id="reg-name" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
+                        <input type="email" id="reg-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
+                        <input type="password" id="reg-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+                
+                <div class="pt-2">
+                    <p class="text-sm font-bold text-[#2C4A3B] mb-2">Select Your Role:</p>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
+                            <input type="radio" name="role" id="role-client" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366]"> Client (සේවාදායක)
+                        </label>
+                        <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
+                            <input type="radio" name="role" id="role-caregiver" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366]"> Caregiver (සාත්තු සේවක)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center mt-4">
+                    <input type="checkbox" id="reg-terms" required class="text-[#82B366] focus:ring-[#82B366] rounded border-gray-300 cursor-pointer">
+                    <label for="reg-terms" class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-[#C19B54] font-bold">Terms and Conditions</a></label>
+                </div>
+
+                <button type="submit" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded hover:bg-[#a88648] transition shadow-md">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- CLIENT KYC PAGE -->
+    <div id="kyc-client-page" class="hidden pt-28 pb-20 bg-gray-50 min-h-screen fade-in">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-6 border-b pb-4">Client Verification (KYC)</h2>
+            <form onsubmit="submitClientKyc(event)" class="space-y-6">
+                
+                <div class="bg-blue-50 p-4 rounded text-blue-800 text-sm font-medium mb-6 border border-blue-100">
+                    <i class="fas fa-info-circle mr-2"></i> Identity Verification / අනන්‍යතා තහවුරු කිරීම
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">NIC / Passport Number</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                        <input type="date" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload NIC / Passport Photos</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                            <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-600">Front Photo</p>
+                            <input type="file" class="hidden">
+                        </div>
+                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                            <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-600">Back Photo</p>
+                            <input type="file" class="hidden">
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                        <i class="fas fa-camera text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-600">Take a Selfie</p>
+                    </div>
+                </div>
+
+                <div class="border-t pt-6 mt-6">
+                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Address & Billing Details</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Home Address</label>
+                            <textarea required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Service Address (If different)</label>
+                            <textarea rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Billing Name</label>
+                                <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Billing Address</label>
+                                <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded text-blue-900 text-xs text-center border border-blue-200">
+                    I confirm that the information provided is correct and I agree to the Golden Hand Caregivers terms & conditions and payment policy.
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" required class="w-4 h-4 text-[#82B366] border-gray-300 rounded">
+                    <label class="ml-2 text-sm font-bold text-gray-700">I Agree (මම එකඟ වෙමි)</label>
+                </div>
+
+                <button type="submit" class="w-full bg-[#82B366] text-white font-bold py-3 rounded hover:bg-[#6c9754] transition shadow-md">Submit KYC</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- CAREGIVER KYC PAGE -->
+    <div id="kyc-caregiver-page" class="hidden pt-28 pb-20 bg-gray-50 min-h-screen fade-in">
+        <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2 border-b pb-4">Caregiver KYC Verification</h2>
+            <p class="text-gray-500 text-sm mb-6">Please complete all 4 steps carefully. / පියවර 4 ම නිවැරදිව පුරවන්න.</p>
+            
+            <form onsubmit="submitCaregiverKyc(event)" class="space-y-8">
+                
+                <!-- Step 1 -->
+                <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 1: Personal Info</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">NIC Number</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                                <option>Female</option>
+                                <option>Male</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                            <input type="date" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
+                        <textarea required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload NIC (Front & Back) & Selfie</label>
+                        <div class="flex gap-4 overflow-x-auto pb-2">
+                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                                <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p class="text-xs">NIC Front</p>
+                            </div>
+                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                                <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p class="text-xs">NIC Back</p>
+                            </div>
+                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                                <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i><p class="text-xs">Selfie</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 2: Professional & Health</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
+                            <input type="number" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Special Skills</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Chronic Illnesses (if any)</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Status</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Reports</label>
+                        <div class="flex gap-4">
+                            <div class="flex-1 border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                                <i class="fas fa-file-alt text-2xl text-gray-400 mb-1"></i><p class="text-xs">Police Report</p>
+                            </div>
+                            <div class="flex-1 border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                                <i class="fas fa-certificate text-2xl text-gray-400 mb-1"></i><p class="text-xs">Certificate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 3: Bank & Services</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Branch</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Expected Salary (Rs./hr)</label>
+                            <input type="number" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Service Type</label>
+                        <div class="flex items-center gap-6">
+                            <label class="flex items-center"><input type="checkbox" class="mr-2 text-[#82B366]"> Live-in (නැවතී සේවය)</label>
+                            <label class="flex items-center"><input type="checkbox" class="mr-2 text-[#82B366]"> Live-out (දිනපතා පැමිණීම)</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Bank Book</label>
+                        <div class="w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
+                            <i class="fas fa-book text-2xl text-gray-400 mb-1"></i><p class="text-xs">Bank Book</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-blue-50 p-6 rounded border border-blue-200 text-center">
+                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-2">Step 4: Legal Declaration</h3>
+                    <p class="text-sm text-[#1E3A8A] mb-4">මා විසින් ඉහත සපයා ඇති සියලුම තොරතුරු සහ ලේඛන සත්‍ය හා නිවැරදි බවට මම මෙයින් සහතික කරමි. GOLDEN HAND CAREGIVERS හි නීති හා රෙගුලාසි වලට යටත් වීමට මා එකඟ වෙමි.</p>
+                    <div class="flex items-center justify-center">
+                        <input type="checkbox" required class="w-4 h-4 text-[#82B366] border-gray-300 rounded">
+                        <label class="ml-2 text-sm font-bold text-gray-700">මම ඉහත කොන්දේසි වලට එකඟ වෙමි.</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-[#82B366] text-white font-bold py-4 rounded hover:bg-[#6c9754] transition shadow-md text-lg">අවසන් කරන්න (Submit)</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- PENDING APPROVAL PAGE -->
+    <div id="pending-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
+        <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-gray-100 text-center">
+            <div class="w-20 h-20 bg-amber-100 text-[#C19B54] rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-clock text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Pending</h2>
+            <p class="text-gray-600 mb-8">ඔබගේ ගිණුම Admin අනුමැතිය සඳහා යොමු කර ඇත. කරුණාකර රැඳී සිටින්න. (Your account is pending Admin approval.)</p>
+            
+            <!-- Dev button to simulate admin approval -->
+            <button onclick="simulateAdminApproval()" class="text-xs text-gray-400 border border-gray-200 px-3 py-1 rounded hover:bg-gray-100">
+                <i class="fas fa-code"></i> Developer: Simulate Admin Approval
+            </button>
+        </div>
+    </div>
+
+
+    <!-- APPROVED & LOGIN PAGE -->
+    <div id="approved-login-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
+        <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-green-100 text-center">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check-circle text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Approved! 🎉</h2>
+            <p class="text-gray-600 mb-8">ඔබගේ ගිණුම අනුමත කර ඇත. කරුණාකර නැවත ලොග් වන්න.</p>
+            
+            <form onsubmit="handleApprovedLogin(event)" class="text-left space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="approved-email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="approved-password" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
+                </div>
+                <button type="submit" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md mt-4">Login</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- REGISTRATION FEE PAGE (CLIENT ONLY) -->
+    <div id="fee-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
+        <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg border border-blue-100">
+            <div class="flex items-center gap-3 mb-6 border-b pb-4">
+                <i class="fas fa-info-circle text-2xl text-[#2C4A3B]"></i>
+                <h2 class="text-xl font-extrabold text-[#2C4A3B]">Pay Registration Fee</h2>
+            </div>
+            
+            <p class="text-gray-600 text-sm mb-4">ඔබගේ ගිණුම සක්‍රීය කිරීමට ලියාපදිංචි ගාස්තුව ගෙවන්න (Pay the fee to activate your account)</p>
+            <h3 class="text-3xl font-extrabold text-[#82B366] mb-6 text-center">Rs. 1,000.00</h3>
+            
+            <div class="bg-[#F1F5F9] p-4 rounded-lg mb-6 border border-gray-200">
+                <p class="font-bold text-sm text-gray-700 mb-2">අපගේ බැංකු ගිණුම් විස්තර:</p>
+                <p class="text-sm">Bank: Seylan Bank</p>
+                <p class="text-sm">Account Name: Golden Hand</p>
+                <p class="text-lg font-extrabold text-[#2C4A3B] my-1">14 901 361 84 8000 1</p>
+                <p class="text-sm">Branch: Katugasthota</p>
+            </div>
+
+            <form onsubmit="submitFee(event)">
+                <label class="block text-sm font-bold text-gray-700 mb-2">මුදල් ගෙවා රිසිට්පත මෙහි අප්ලෝඩ් කරන්න:</label>
+                <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100 mb-6 relative">
+                    <i class="fas fa-plus-circle text-3xl text-gray-400 mb-2"></i>
+                    <p class="text-sm text-gray-600">Tap to select receipt</p>
+                    <input type="file" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                </div>
+                <button type="submit" class="w-full bg-[#0EA5E9] text-white font-bold py-3 rounded hover:bg-[#0284c7] transition shadow-md">Submit Receipt</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- PAGE ROUTING & LOGIC -->
+    <script>
+        // Data Store (Simulating DB flow for UI presentation)
+        let currentUserData = {
+            role: 'CLIENT', // Default
+            email: '',
+            password: '',
+            status: 'NONE' // NONE -> PENDING -> APPROVED -> ACTIVE
+        };
+
+        // UI Router
+        function showPage(pageId) {
+            const pages = [
+                'main-landing-page', 
+                'auth-page', 
+                'kyc-client-page', 
+                'kyc-caregiver-page',
+                'pending-page',
+                'approved-login-page',
+                'fee-page'
+            ];
+            
+            pages.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            
+            document.getElementById(pageId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Auth Tabs Toggle
+        function setAuthMode(mode) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+
+            if (mode === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                
+                tabLogin.classList.replace('text-gray-400', 'text-[#C19B54]');
+                tabLogin.classList.replace('border-transparent', 'border-[#C19B54]');
+                tabRegister.classList.replace('text-[#C19B54]', 'text-gray-400');
+                tabRegister.classList.replace('border-[#C19B54]', 'border-transparent');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                
+                tabRegister.classList.replace('text-gray-400', 'text-[#C19B54]');
+                tabRegister.classList.replace('border-transparent', 'border-[#C19B54]');
+                tabLogin.classList.replace('text-[#C19B54]', 'text-gray-400');
+                tabLogin.classList.replace('border-[#C19B54]', 'border-transparent');
+            }
+        }
+
+        // Actions
+        function handleLogin(e) {
+            e.preventDefault();
+            alert("ගිණුමක් තවම සාදා නැත. කරුණාකර Sign Up වන්න.");
+            setAuthMode('register');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const termsChecked = document.getElementById('reg-terms').checked;
+            if(!termsChecked) return;
+
+            currentUserData.email = document.getElementById('reg-email').value;
+            currentUserData.password = document.getElementById('reg-password').value;
+            currentUserData.role = document.getElementById('role-caregiver').checked ? 'CAREGIVER' : 'CLIENT';
+            
+            alert("Account Created successfully! Please complete KYC verification.");
+
+            if (currentUserData.role === 'CLIENT') {
+                showPage('kyc-client-page');
+            } else {
+                showPage('kyc-caregiver-page');
+            }
+        }
+
+        function submitClientKyc(e) {
+            e.preventDefault();
+            currentUserData.status = 'PENDING';
+            showPage('pending-page');
+        }
+
+        function submitCaregiverKyc(e) {
+            e.preventDefault();
+            currentUserData.status = 'PENDING';
+            showPage('pending-page');
+        }
+
+        // Developer hook to simulate the admin approving the account in real app
+        function simulateAdminApproval() {
+            currentUserData.status = 'APPROVED';
+            showPage('approved-login-page');
+        }
+
+        function handleApprovedLogin(e) {
+            e.preventDefault();
+            
+            // Verify fake credentials matching
+            const checkEmail = document.getElementById('approved-email').value;
+            const checkPass = document.getElementById('approved-password').value;
+            
+            if (checkEmail === currentUserData.email && checkPass === currentUserData.password) {
+                if (currentUserData.role === 'CLIENT') {
+                    showPage('fee-page');
+                } else {
+                    alert("Welcome Caregiver! Account fully activated. \n(Dashboard will load here in real app)");
+                    showPage('main-landing-page');
+                }
+            } else {
+                alert("Incorrect Email or Password.");
+            }
+        }
+
+        function submitFee(e) {
+            e.preventDefault();
+            currentUserData.status = 'ACTIVE';
+            alert("Payment Receipt Submitted! \nYour Client account is fully active. \n(Dashboard will load here in real app)");
+            showPage('main-landing-page');
+        }
+
+        function simulateGoogleLogin() {
+            alert("Google Sign In Interface would open here.");
+            // Simulating successful generic user role selection
+            currentUserData.role = 'CLIENT';
+            showPage('kyc-client-page');
+        }
+    </script>
+
+    <!-- 
+    ========================================================================
+    FIREBASE INTEGRATION (PRODUCTION READY)
+    ========================================================================
+    මෙම කොටස ඔබගේ cPanel එකට දැමූ පසු ඔබගේ සත්‍ය Firebase Database එකට
+    සම්බන්ධ වීමට භාවිත කරන්න.
+    -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // *** YOUR FIREBASE CONFIG GOES HERE ***
+        const firebaseConfig = {
+            apiKey: "",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        try {
+            // Initialize Firebase
+            const appConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
+            const app = initializeApp(appConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            // Make it globally available if you want to connect the UI elements directly to Firebase
+            window.firebaseDB = db;
+            window.firebaseAuth = auth;
+            
+            /* Example Real Firebase Setup:
+             To connect the above UI forms directly to Firebase, you would replace the 
+             `handleRegister` and `submitKyc` functions above with calls like:
+
+             createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
+                 setDoc(doc(db, "users", userCred.user.uid), {
+                     email: email,
+                     role: "CLIENT",
+                     isVerified: false
+                 });
+             });
+            */
+            
+        } catch(error) {
+            console.warn("Firebase initialization skipped or failed. Using UI Simulation mode.", error);
+        }
+    </script>
 </body>
 </html>
