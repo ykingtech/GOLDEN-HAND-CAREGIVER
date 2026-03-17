@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,810 +7,1131 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Grid background matching the uploaded image */
+        body { background-color: #ffffff; }
+        .app-container { width: 100%; min-height: 100vh; position: relative; overflow-x: hidden; }
         .bg-grid {
-            background-color: #ffffff;
-            background-image: 
-                linear-gradient(to right, #e5e7eb 1px, transparent 1px), 
-                linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+            background-color: transparent;
+            background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
             background-size: 40px 40px;
         }
-        .fade-in {
-            animation: fadeIn 0.4s ease-in-out;
-        }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .image-fade-bottom {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+        /* Custom Scrollbar for Chat */
+        .chat-scroll::-webkit-scrollbar { width: 5px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        
+        /* Floating Chat Styles */
+        #floating-chat-container {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+            display: flex; flex-direction: column; align-items: flex-end;
+        }
+        #chat-window {
+            width: 320px; height: 400px; background: white; border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: none; flex-direction: column;
+            overflow: hidden; border: 1px solid #e5e7eb; margin-bottom: 15px;
+        }
+        #chat-toggle-btn {
+            width: 60px; height: 60px; border-radius: 50%; background: #10213b;
+            color: white; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s;
+        }
+        #chat-toggle-btn:hover { transform: scale(1.05); background: #2C4A3B; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="text-gray-800 font-sans">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('main-landing-page')">
-                    <span class="text-2xl font-extrabold text-[#2C4A3B] flex items-center gap-2 tracking-wide">
-                        <i class="fas fa-hands-holding-circle text-[#82B366]"></i> 
-                        GOLDEN HAND
-                    </span>
-                </div>
-                <div class="hidden md:flex items-center space-x-5 text-[13px] font-bold text-[#2C4A3B] uppercase tracking-wider">
-                    <a href="#home" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Home</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="#services" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Services</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="#features" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Why Us</a>
-                    <span class="text-gray-300">|</span>
-                    <a href="#pricing" onclick="showPage('main-landing-page')" class="hover:text-[#C19B54] transition">Pricing</a>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
+            <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="flex justify-between items-center h-[90px]">
+                    <!-- Logo -->
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="window.goToSection('home')">
+                        <div class="w-[50px] h-[50px] rounded-full border-[2px] border-[#82B366] flex flex-col items-center justify-center text-[#2C4A3B] relative bg-white">
+                            <i class="fas fa-plus text-[8px] text-[#82B366] absolute top-1.5"></i>
+                            <i class="fas fa-hands-holding text-[16px] text-[#2C4A3B] mt-1"></i>
+                            <svg class="absolute inset-0 w-full h-full animate-[spin_20s_linear_infinite]" viewBox="0 0 100 100">
+                                <path d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" id="circle" fill="none"/>
+                                <text class="text-[8.5px] font-bold uppercase fill-[#2C4A3B] tracking-widest"><textPath href="#circle">Golden Hand Caregivers</textPath></text>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[22px] font-extrabold text-[#2C4A3B] tracking-wide leading-none">GOLDEN HAND</span>
+                            <span class="text-[13px] font-bold text-[#2C4A3B] tracking-[0.1em] leading-tight">HOME NURSING</span>
+                        </div>
+                    </div>
                     
-                    <a href="#contact" onclick="showPage('main-landing-page')" class="ml-4 bg-[#C19B54] text-white px-5 py-2 hover:bg-[#a88648] transition rounded-sm">
-                        [CONTACT US]
-                    </a>
+                    <!-- Nav Links -->
+                    <div class="hidden lg:flex items-center space-x-3 text-[11px] font-bold text-gray-700 uppercase tracking-widest">
+                        <a href="javascript:void(0)" onclick="window.goToSection('home')" class="hover:text-[#82B366] transition">HOME</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="javascript:void(0)" onclick="window.goToSection('features')" class="hover:text-[#82B366] transition">ABOUT US</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="javascript:void(0)" onclick="window.goToSection('services')" class="hover:text-[#82B366] transition">SERVICES</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="javascript:void(0)" onclick="window.goToSection('top-caregivers')" class="hover:text-[#82B366] transition">REVIEWS</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="javascript:void(0)" onclick="window.goToSection('contact')" class="hover:text-[#82B366] transition">CONTACT</a>
 
-                    <!-- New Login/Register Button -->
-                    <a href="#" onclick="showPage('auth-page'); setAuthMode('login');" class="ml-2 flex items-center gap-2 text-[#2C4A3B] border-2 border-[#2C4A3B] px-4 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
-                        <i class="fas fa-user-circle text-lg"></i> LOGIN / REGISTER
-                    </a>
+                        <!-- Auth Button Container -->
+                        <div id="nav-auth-container">
+                            <a href="javascript:void(0)" onclick="window.showPage('auth-page'); window.setAuthMode('login');" class="ml-4 flex items-center gap-1.5 text-[#2C4A3B] border border-[#2C4A3B] px-2.5 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
+                                <i class="fas fa-user"></i> LOGIN / REGISTER
+                            </a>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </nav>
+
+        <!-- Floating Chat Widget -->
+        <div id="floating-chat-container">
+            <div id="chat-window">
+                <div class="bg-[#10213b] text-white px-4 py-3 flex justify-between items-center shadow-md z-10">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-headset text-[#C19B54]"></i>
+                        <span class="font-bold text-sm">Live Support</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center gap-1.5 text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+                        </span>
+                        <button onclick="window.toggleChat()" class="text-white hover:text-gray-300"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-[#f8fafc] flex flex-col gap-3 chat-scroll">
+                    <!-- Default welcome message -->
+                    <div class="text-left">
+                        <span class="bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm">
+                            Hello! How can we help you today? 👋<br>
+                            <span class="text-[9px] text-gray-400 mt-1 block">Golden Hand Support</span>
+                        </span>
+                    </div>
+                </div>
+                <form class="p-3 bg-white border-t flex items-center gap-2" onsubmit="window.sendChatMessage(event)">
+                    <input type="text" id="chat-input" placeholder="Type a message..." required class="flex-1 bg-gray-100 border-none rounded-full px-4 py-2 text-sm focus:ring-1 focus:ring-[#C19B54] outline-none">
+                    <button type="submit" class="bg-[#10213b] text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#C19B54] transition shadow-md">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </form>
+            </div>
+            <div id="chat-toggle-btn" onclick="window.toggleChat()">
+                <i class="fas fa-comments text-[26px]"></i>
             </div>
         </div>
-    </nav>
 
-    <!-- MAIN LANDING PAGE CONTAINER -->
-    <div id="main-landing-page">
-        <!-- Hero Section -->
-        <section id="home" class="pt-32 pb-20 bg-grid relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center relative z-10">
-                <div class="md:w-1/2 mb-12 md:mb-0 md:pr-10">
-                    <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-[#2C4A3B] uppercase tracking-wide">
-                        Compassionate Care from <br><span class="text-[#2C4A3B]">Golden Hands</span>
-                    </h1>
-                    <p class="text-lg mb-8 text-gray-700 font-medium leading-relaxed max-w-lg">
-                        Professional caregiving platform connecting you with verified caregivers for elderly, patient, and baby care.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#pricing" class="bg-[#2C4A3B] text-white font-bold px-7 py-3 hover:bg-[#1f352a] transition uppercase text-sm tracking-wider rounded-sm shadow-md">
-                            [GET A QUOTE]
-                        </a>
+        <!-- ========================================== -->
+        <!-- MAIN LANDING PAGE                          -->
+        <!-- ========================================== -->
+        <div id="main-landing-page" class="fade-in">
+            <!-- Hero Section -->
+            <section id="home" class="pt-16 pb-0 relative border-b border-gray-100 h-[520px]">
+                <div class="absolute inset-0 bg-grid right-0 left-1/3 -z-10"></div>
+                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center relative z-10 h-full">
+                    <div class="md:w-[50%] z-20 pb-10">
+                        <h1 class="text-[34px] lg:text-[42px] font-extrabold mb-5 leading-[1.1] text-[#2C4A3B] uppercase tracking-wide">
+                            ELEVATING HOME CARE <br> WITH COMPASSION <br> & DIGNITY
+                        </h1>
+                        <p class="text-[13px] mb-6 text-gray-800 font-bold leading-relaxed max-w-[400px]">
+                            We understand the unique needs of our seniors, and we're here to provide personalized care that promotes independence, dignity, and a fulfilling quality of life.
+                        </p>
+                        <div>
+                            <button onclick="window.goToSection('services')" class="bg-[#3A5A40] text-white font-bold px-5 py-3 hover:bg-[#2C4A3B] transition uppercase text-xs tracking-wider rounded-sm inline-block">
+                                [EXPLORE OUR CARE PLANS]
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Hero Image -->
+                    <div class="md:w-[50%] h-full relative flex justify-center items-end">
+                        <div class="absolute w-[65%] h-[80%] border-[4px] border-[#C19B54] top-4 left-[20%] -z-10 bg-transparent"></div>
+                        <img src="IMG_5925.JPG.jpeg" alt="Professional Caregiver" class="h-[105%] object-cover object-top relative z-10 image-fade-bottom scale-105 origin-bottom drop-shadow-xl">
                     </div>
                 </div>
-                <div class="md:w-1/2 text-center relative mt-8 md:mt-0">
-                    <!-- Golden square offset border matching the image style -->
-                    <div class="absolute inset-0 border-4 border-[#C19B54] transform translate-x-6 -translate-y-6 rounded-sm w-4/5 mx-auto h-full -z-10"></div>
-                    <img src="https://img.freepik.com/free-photo/nurse-measuring-patient-blood-pressure_23-2148962326.jpg" alt="Caregiver Service" class="shadow-xl mx-auto w-4/5 rounded-sm object-cover relative z-10">
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Services Section -->
-        <section id="services" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-2xl font-extrabold mb-3 text-[#2C4A3B] uppercase tracking-widest">Our Services</h2>
-                <p class="text-gray-600 mb-12 font-medium">Select the best care category for your loved ones.</p>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
-                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-wheelchair"></i></div>
-                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Elderly Care</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed text-center">Dedicated support for seniors including daily duty summary, medicine reminders, and companionship.</p>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
-                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-user-nurse"></i></div>
-                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Patient Care</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed text-center">Professional assistance for recovering patients with health monitoring and verified caregivers.</p>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition border border-gray-200 flex flex-col items-center">
-                        <div class="text-[#162842] text-5xl mb-5"><i class="fas fa-baby-carriage"></i></div>
-                        <h3 class="text-lg font-bold mb-3 text-gray-900 uppercase">Baby Care</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed text-center">Trusted babysitting services ensuring safety and care for your little ones while you are away.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="py-20 bg-grid border-t border-gray-100">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-2xl font-extrabold text-[#2C4A3B] uppercase tracking-widest">Why Golden Hand?</h2>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-12 justify-center">
-                    <!-- Safety & Reliability -->
-                    <div class="md:w-1/2 bg-white p-10 rounded-lg shadow-sm border border-gray-200">
-                        <h3 class="text-xl font-bold mb-8 text-[#2C4A3B] uppercase text-center">Safety & Reliability First</h3>
-                        <ul class="space-y-6">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Verified Caregivers</h4>
-                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Strict KYC, NIC verification, and Police Reports are mandatory for all our staff.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Real-Time Tracking</h4>
-                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Monitor attendance (Check-in/Out) and live location of your assigned caregiver.</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-[#82B366] mt-1 mr-4 text-xl"></i>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Secure Payments</h4>
-                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Transparent billing, invoice downloads, and secure online payment options via PayHere.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- How It Works -->
-                    <div class="md:w-1/2 bg-white p-10 rounded-lg shadow-sm border border-gray-200">
-                        <h3 class="text-xl font-bold mb-8 text-[#2C4A3B] uppercase text-center">How It Works</h3>
-                        <div class="flex flex-col space-y-5">
-                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition cursor-pointer" onclick="showPage('auth-page')">1. Register / Login (OTP)</div>
-                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">2. Select Category & Time</div>
-                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">3. Secure Payment</div>
-                            <div class="p-4 border border-gray-200 rounded-full text-center shadow-sm font-bold text-[#2C4A3B] hover:border-[#C19B54] transition">4. Caregiver Assigned</div>
+            <!-- Services Section -->
+            <section id="services" class="py-12 bg-white relative z-20">
+                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <h2 class="text-lg font-extrabold mb-6 text-[#2C4A3B] uppercase tracking-widest">OUR CORE SERVICES</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
+                            <div class="text-[#10213b] text-[38px] mb-3 relative"><i class="fas fa-users"></i></div>
+                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Companion and Social<br>Engagement</h3>
+                            <p class="text-gray-600 text-[11px] leading-relaxed">Active engagement, social activities, and genuine companionship.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
+                            <div class="text-[#10213b] text-[38px] mb-3"><i class="fas fa-hands-holding-heart"></i></div>
+                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Meal Planning and<br>Preparation</h3>
+                            <p class="text-gray-600 text-[11px] leading-relaxed">Nutritious meal plans and personalized food preparation.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
+                            <div class="text-[#10213b] text-[38px] mb-3"><i class="fas fa-hands-wash"></i></div>
+                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Personal Care &<br>Hygiene</h3>
+                            <p class="text-gray-600 text-[11px] leading-relaxed">Assistance with bathing, dressing, and daily personal hygiene.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
+                            <div class="text-[#10213b] text-[38px] mb-3 relative"><i class="fas fa-notes-medical"></i></div>
+                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Skilled Nursing &<br>Medication Support</h3>
+                            <p class="text-gray-600 text-[11px] leading-relaxed">Licensed nursing care, wound management, and medication administration.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Pricing Section -->
-        <section id="pricing" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-2xl font-extrabold text-[#2C4A3B] uppercase tracking-widest mb-4">Transparent Pricing Packages</h2>
-                    <p class="text-md text-gray-600 max-w-2xl mx-auto font-medium leading-relaxed">
-                        We understand that every patient has unique needs. Whether you need short-term assistance or long-term 24/7 care, we have flexible packages.
-                    </p>
-                </div>
-                    
-                <div class="grid md:grid-cols-3 gap-6 mb-16 max-w-5xl mx-auto">
-                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
-                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Daily Basis</h4>
-                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Perfect for short-term needs or emergencies.</p>
+            <!-- Features Section -->
+            <section id="features" class="py-12 relative">
+                <div class="absolute inset-0 bg-grid right-0 left-1/2 -z-10"></div>
+                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+                    <div class="text-center mb-10">
+                        <h2 class="text-lg font-extrabold text-[#3A5A40] uppercase tracking-widest">WHY GOLDEN HAND?</h2>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
-                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Weekly Package</h4>
-                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Recovering patients needing observation.</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center hover:shadow-md transition">
-                        <h4 class="font-bold text-lg text-[#C19B54] uppercase tracking-wide">Monthly Subscription</h4>
-                        <p class="text-gray-500 text-sm mt-3 leading-relaxed">Best value for long-term elderly care.</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-lg font-bold text-[#2C4A3B] mb-8 uppercase tracking-wider">Contact us now for a customized quotation</p>
-                    
-                    <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                        <div class="bg-white px-8 py-5 rounded-sm shadow-sm flex items-center gap-5 border border-gray-200 border-l-4 border-l-[#C19B54] w-full md:w-auto justify-center hover:shadow-md transition">
-                            <i class="fas fa-phone-volume text-3xl text-[#C19B54]"></i>
-                            <div class="text-left">
-                                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1">Call for Rates</p>
-                                <a href="tel:+94760059709" class="text-xl font-bold text-[#162842] hover:text-[#C19B54] transition">+94 76 005 9709</a>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 justify-items-center">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
+                                <img src="https://img.freepik.com/free-photo/nurse-holding-senior-woman-s-hands_23-2148239023.jpg" class="w-full h-full object-cover">
                             </div>
+                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Compassionate<br>Companionship.</h4>
                         </div>
+                        <div class="flex flex-col items-center text-center mt-6 md:mt-0">
+                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
+                                <img src="https://img.freepik.com/free-photo/close-up-doctor-holding-elderly-patient-hands_23-2148962328.jpg" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Experienced,<br>Qualified Team.</h4>
+                        </div>
+                        <div class="flex flex-col items-center text-center mt-12 md:mt-0">
+                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
+                                <img src="https://img.freepik.com/free-photo/smiling-young-female-doctor-wearing-medical-robe-with-stethoscope-holding-digital-tablet-isolated-white-background_141793-131102.jpg" class="w-full h-full object-cover scale-110 object-top">
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Experienced,<br>Qualified Team.</h4>
+                        </div>
+                        <div class="flex flex-col items-center text-center mt-6 md:mt-0">
+                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
+                                <img src="https://img.freepik.com/free-photo/portrait-successful-mid-adult-doctor-with-tablet-computer_1262-12882.jpg" class="w-full h-full object-cover object-top">
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Technology-Enabled<br>Care.</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                        <div class="bg-white px-8 py-5 rounded-sm shadow-sm flex items-center gap-5 border border-gray-200 border-l-4 border-l-[#C19B54] w-full md:w-auto justify-center hover:shadow-md transition">
-                            <i class="fas fa-envelope-open-text text-3xl text-[#C19B54]"></i>
-                             <div class="text-left">
-                                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1">Email for Quote</p>
-                                <a href="mailto:goldenhandcaregivers@gmail.com" class="text-lg font-bold text-[#162842] hover:text-[#C19B54] transition">goldenhandcaregivers@gmail.com</a>
+            <!-- NEW: Top Rated Caregivers Section -->
+            <section id="top-caregivers" class="py-16 bg-[#F8FAFC] relative border-t border-gray-100">
+                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-2xl font-extrabold text-[#10213b] uppercase tracking-widest">TOP RATED CAREGIVERS</h2>
+                        <p class="text-sm text-gray-500 mt-2">විශිෂ්ටතම සේවාවක් සැපයූ අපගේ සාත්තු සේවකයින්</p>
+                    </div>
+                    
+                    <div id="top-caregivers-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+                        <!-- Caregivers will be loaded here dynamically via JS -->
+                        <div class="col-span-3 text-center py-10">
+                            <i class="fas fa-spinner fa-spin text-3xl text-[#C19B54]"></i>
+                            <p class="text-sm text-gray-500 mt-3">Loading top caregivers...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Section -->
+            <footer id="contact" class="bg-[#10213b] text-white pt-10 pb-6 px-4 sm:px-6 lg:px-8 mt-8 border-t-[12px] border-[#2C4A3B]">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-1 tracking-wide">GET IN TOUCH</h3>
+                        <p class="text-gray-300 text-[12px] mb-6">Experience the Golden Hand Difference.</p>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="text-[#C19B54] text-[32px]"><i class="fas fa-phone-square-alt"></i></div>
+                            <div><p class="text-[11px] text-gray-300">Call Us:</p><p class="font-bold text-sm tracking-widest">070 755 68 86</p></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col pt-2 md:pl-4">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="text-[#C19B54] text-[32px] mt-1"><i class="fas fa-map-marker-alt"></i></div>
+                            <div><p class="text-[11px] text-gray-300">Location:</p><p class="text-[12px] font-bold leading-snug">No 200/108 Kandy,<br>Sri Lanka</p></div>
+                        </div>
+                        <div class="mt-2">
+                            <p class="text-[13px] font-bold mb-2">Connect with Us</p>
+                            <div class="flex gap-2">
+                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer Section -->
-        <footer id="contact" class="bg-[#162842] text-white py-16">
-            <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12 md:gap-8">
-                <div>
-                    <h3 class="text-xl font-extrabold mb-5 text-[#C19B54] flex items-center gap-2">
-                        <i class="fas fa-hands-holding-circle"></i> GOLDEN HAND CAREGIVERS
-                    </h3>
-                    <p class="text-gray-400 text-sm leading-relaxed pr-4">Providing trusted caregiving services with a focus on safety, professionalism, and compassion.</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-bold mb-5 text-white uppercase tracking-wider">Contact Us</h3>
-                    <ul class="text-gray-400 space-y-4 text-sm">
-                        <li class="flex items-center"><i class="fas fa-phone mr-3 text-[#C19B54]"></i> +94 76 005 9709</li> 
-                        <li class="flex items-center"><i class="fas fa-envelope mr-3 text-[#C19B54]"></i> goldenhandcaregivers@gmail.com</li>
-                        <li class="flex items-start"><i class="fas fa-map-marker-alt mr-3 mt-1 text-[#C19B54]"></i> <span>No 200/108, Peradeniya Road, <br>Kandy</span></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-bold mb-5 text-white uppercase tracking-wider">Legal</h3>
-                    <ul class="text-gray-400 space-y-3 text-sm">
-                        <li><a href="terms.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Terms & Conditions</a></li>
-                        <li><a href="privacy.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Privacy Policy</a></li>
-                        <li><a href="refund.html" class="hover:text-[#C19B54] transition flex items-center gap-2"><i class="fas fa-angle-right text-xs"></i> Refund Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-700/50 mt-12 pt-8 text-center px-4">
-                <p class="text-gray-500 text-sm">&copy; 2024 Golden Hand Caregivers. All rights reserved.</p>
-                <p class="mt-2 text-xs text-gray-600">Powered by <span class="text-[#C19B54] font-semibold">PostKina Technologies</span></p>
-            </div>
-        </footer>
-    </div>
-    <!-- END MAIN LANDING PAGE CONTAINER -->
-
-
-    <!-- AUTHENTICATION PAGE (LOGIN / REGISTER) -->
-    <div id="auth-page" class="hidden pt-28 pb-20 bg-grid min-h-screen fade-in">
-        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-[#2C4A3B] uppercase tracking-wide">GOLDEN HAND</h2>
-                <p class="text-[#82B366] font-bold mt-1">CAREGIVERS</p>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-200 mb-6">
-                <button id="tab-login" onclick="setAuthMode('login')" class="flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition">Sign In</button>
-                <button id="tab-register" onclick="setAuthMode('register')" class="flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition">Sign Up</button>
-            </div>
-
-            <!-- Login Form -->
-            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
-                <p class="text-center text-gray-500 mb-4">Welcome Back!</p>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <div class="relative">
-                        <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
-                        <input type="email" id="login-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
+                    <div class="flex flex-col pt-2">
+                         <h3 class="text-lg font-bold mb-3 tracking-wide">LOCATION INFO</h3>
+                         <p class="text-[11px] text-gray-300 leading-relaxed">Providing high quality home nursing and elderly care services in Kandy and surrounding areas with professional staff.</p>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
-                        <input type="password" id="login-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
-                    </div>
+                <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-[#1c355c]">
+                    <p class="text-[10px] text-gray-400">Copyright © 2022 Goldener Caregivers. Ltd.</p>
                 </div>
-                <div class="text-right">
-                    <a href="#" class="text-sm text-[#82B366] font-bold hover:underline">Forgot Password?</a>
-                </div>
-                <button type="submit" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md">Sign In</button>
-                
-                <div class="text-center text-gray-400 my-4">OR</div>
-
-                <button type="button" onclick="simulateGoogleLogin()" class="w-full bg-white border-2 border-[#2C4A3B] text-[#2C4A3B] font-bold py-3 rounded hover:bg-gray-50 transition shadow-sm flex justify-center items-center gap-2">
-                    <i class="fab fa-google text-red-500"></i> Sign in with Google
-                </button>
-            </form>
-
-            <!-- Register Form (Hidden by default) -->
-            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-5 hidden">
-                <p class="text-center text-gray-500 mb-4">Join Golden Hand Caregivers today</p>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <div class="relative">
-                        <i class="fas fa-person absolute left-3 top-3 text-[#2C4A3B]"></i>
-                        <input type="text" id="reg-name" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <div class="relative">
-                        <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
-                        <input type="email" id="reg-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
-                        <input type="password" id="reg-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54] focus:border-[#C19B54]">
-                    </div>
-                </div>
-                
-                <div class="pt-2">
-                    <p class="text-sm font-bold text-[#2C4A3B] mb-2">Select Your Role:</p>
-                    <div class="flex items-center gap-4">
-                        <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
-                            <input type="radio" name="role" id="role-client" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366]"> Client (සේවාදායක)
-                        </label>
-                        <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
-                            <input type="radio" name="role" id="role-caregiver" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366]"> Caregiver (සාත්තු සේවක)
-                        </label>
-                    </div>
-                </div>
-
-                <div class="flex items-center mt-4">
-                    <input type="checkbox" id="reg-terms" required class="text-[#82B366] focus:ring-[#82B366] rounded border-gray-300 cursor-pointer">
-                    <label for="reg-terms" class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-[#C19B54] font-bold">Terms and Conditions</a></label>
-                </div>
-
-                <button type="submit" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded hover:bg-[#a88648] transition shadow-md">Create Account</button>
-            </form>
+            </footer>
         </div>
-    </div>
 
-
-    <!-- CLIENT KYC PAGE -->
-    <div id="kyc-client-page" class="hidden pt-28 pb-20 bg-gray-50 min-h-screen fade-in">
-        <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-6 border-b pb-4">Client Verification (KYC)</h2>
-            <form onsubmit="submitClientKyc(event)" class="space-y-6">
-                
-                <div class="bg-blue-50 p-4 rounded text-blue-800 text-sm font-medium mb-6 border border-blue-100">
-                    <i class="fas fa-info-circle mr-2"></i> Identity Verification / අනන්‍යතා තහවුරු කිරීම
+        <!-- ========================================== -->
+        <!-- AUTHENTICATION PAGE                        -->
+        <!-- ========================================== -->
+        <div id="auth-page" class="hidden pt-12 pb-20 bg-grid min-h-[80vh] fade-in">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100 mt-10">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-extrabold text-[#2C4A3B] uppercase tracking-wide">GOLDEN HAND</h2>
+                    <p class="text-[#82B366] font-bold mt-1">CAREGIVERS</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button id="tab-login" onclick="window.setAuthMode('login')" class="flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition">Sign In</button>
+                    <button id="tab-register" onclick="window.setAuthMode('register')" class="flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition">Sign Up</button>
+                </div>
+
+                <form id="login-form" onsubmit="window.handleLogin(event)" class="space-y-5">
+                    <p class="text-center text-gray-500 mb-4">Welcome Back!</p>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">NIC / Passport Number</label>
-                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
+                            <input type="email" id="login-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                        <input type="date" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
+                            <input type="password" id="login-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" id="btn-login" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md">Sign In</button>
+                    
+                    <div class="text-center text-gray-400 my-4">OR</div>
+                    <button type="button" id="btn-google" onclick="window.handleGoogleLogin()" class="w-full bg-white border-2 border-[#2C4A3B] text-[#2C4A3B] font-bold py-3 rounded hover:bg-gray-50 transition shadow-sm flex justify-center items-center gap-2">
+                        <i class="fab fa-google text-red-500"></i> Sign in with Google
+                    </button>
+                </form>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload NIC / Passport Photos</label>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                            <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-600">Front Photo</p>
-                            <input type="file" class="hidden">
-                        </div>
-                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                            <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-600">Back Photo</p>
-                            <input type="file" class="hidden">
+                <form id="register-form" onsubmit="window.handleRegister(event)" class="space-y-5 hidden">
+                    <p class="text-center text-gray-500 mb-4">Join Golden Hand Caregivers today</p>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <div class="relative">
+                            <i class="fas fa-person absolute left-3 top-3 text-[#2C4A3B]"></i>
+                            <input type="text" id="reg-name" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
                         </div>
                     </div>
-                </div>
-                
-                <div>
-                    <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                        <i class="fas fa-camera text-3xl text-gray-400 mb-2"></i>
-                        <p class="text-sm text-gray-600">Take a Selfie</p>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
+                            <input type="email" id="reg-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
+                        </div>
                     </div>
-                </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
+                            <input type="password" id="reg-password" required minlength="6" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <p class="text-sm font-bold text-[#2C4A3B] mb-2">Select Your Role:</p>
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
+                                <input type="radio" name="role" id="role-client" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366]"> Client (සේවාදායක)
+                            </label>
+                            <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
+                                <input type="radio" name="role" id="role-caregiver" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366]"> Caregiver (සාත්තු සේවක)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <input type="checkbox" id="reg-terms" required class="text-[#82B366] focus:ring-[#82B366] rounded border-gray-300 cursor-pointer">
+                        <label for="reg-terms" class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-[#C19B54] font-bold">Terms and Conditions</a></label>
+                    </div>
+                    <button type="submit" id="btn-register" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded hover:bg-[#a88648] transition shadow-md">Create Account</button>
+                </form>
+            </div>
+        </div>
 
-                <div class="border-t pt-6 mt-6">
-                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Address & Billing Details</h3>
-                    <div class="space-y-4">
+        <!-- ========================================== -->
+        <!-- CLIENT KYC PAGE                            -->
+        <!-- ========================================== -->
+        <div id="kyc-client-page" class="hidden pt-12 pb-20 bg-gray-50 min-h-screen fade-in">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100 mt-10">
+                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-6 border-b pb-4">සේවාදායක තහවුරු කිරීම (Client KYC)</h2>
+                <form id="form-client-kyc" onsubmit="window.submitClientKyc(event)" class="space-y-6">
+                    <div class="bg-blue-50 p-4 rounded text-blue-800 text-sm font-medium mb-6 border border-blue-100">
+                        <i class="fas fa-info-circle mr-2"></i> Identity Verification / අනන්‍යතා තහවුරු කිරීම
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Home Address</label>
-                            <textarea required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">NIC / Passport Number</label>
+                            <input type="text" id="client-nic" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Service Address (If different)</label>
-                            <textarea rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth (උපන් දිනය)</label>
+                            <input type="date" id="client-dob" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload NIC / Passport Photos</label>
                         <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Billing Name</label>
-                                <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                            <div onclick="document.getElementById('client-nic-front').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                                <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
+                                <p id="txt-client-nic-front" class="text-sm text-gray-600">Front Photo</p>
+                                <input type="file" id="client-nic-front" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-nic-front').innerText='Selected'">
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Billing Address</label>
-                                <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
+                            <div onclick="document.getElementById('client-nic-back').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                                <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
+                                <p id="txt-client-nic-back" class="text-sm text-gray-600">Back Photo</p>
+                                <input type="file" id="client-nic-back" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-nic-back').innerText='Selected'">
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="bg-blue-50 p-4 rounded text-blue-900 text-xs text-center border border-blue-200">
-                    I confirm that the information provided is correct and I agree to the Golden Hand Caregivers terms & conditions and payment policy.
-                </div>
-                
-                <div class="flex items-center">
-                    <input type="checkbox" required class="w-4 h-4 text-[#82B366] border-gray-300 rounded">
-                    <label class="ml-2 text-sm font-bold text-gray-700">I Agree (මම එකඟ වෙමි)</label>
-                </div>
-
-                <button type="submit" class="w-full bg-[#82B366] text-white font-bold py-3 rounded hover:bg-[#6c9754] transition shadow-md">Submit KYC</button>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- CAREGIVER KYC PAGE -->
-    <div id="kyc-caregiver-page" class="hidden pt-28 pb-20 bg-gray-50 min-h-screen fade-in">
-        <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2 border-b pb-4">Caregiver KYC Verification</h2>
-            <p class="text-gray-500 text-sm mb-6">Please complete all 4 steps carefully. / පියවර 4 ම නිවැරදිව පුරවන්න.</p>
-            
-            <form onsubmit="submitCaregiverKyc(event)" class="space-y-8">
-                
-                <!-- Step 1 -->
-                <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 1: Personal Info</h3>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NIC Number</label>
-                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
-                                <option>Female</option>
-                                <option>Male</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                            <input type="date" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]">
-                        </div>
-                    </div>
+                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
-                        <textarea required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54] focus:border-[#C19B54]"></textarea>
-                    </div>
-                    <div class="mt-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload NIC (Front & Back) & Selfie</label>
-                        <div class="flex gap-4 overflow-x-auto pb-2">
-                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                                <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p class="text-xs">NIC Front</p>
-                            </div>
-                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                                <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p class="text-xs">NIC Back</p>
-                            </div>
-                            <div class="min-w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                                <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i><p class="text-xs">Selfie</p>
-                            </div>
+                        <div onclick="document.getElementById('client-selfie').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
+                            <i class="fas fa-camera text-3xl text-gray-400 mb-2"></i>
+                            <p id="txt-client-selfie" class="text-sm text-gray-600">Take a Selfie</p>
+                            <input type="file" id="client-selfie" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-selfie').innerText='Selected'">
                         </div>
                     </div>
-                </div>
 
-                <!-- Step 2 -->
-                <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 2: Professional & Health</h3>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
-                            <input type="number" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Special Skills</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Chronic Illnesses (if any)</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Status</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Reports</label>
-                        <div class="flex gap-4">
-                            <div class="flex-1 border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                                <i class="fas fa-file-alt text-2xl text-gray-400 mb-1"></i><p class="text-xs">Police Report</p>
+                    <div class="border-t pt-6 mt-6">
+                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Address & Billing Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Home Address (නිවසේ ලිපිනය)</label>
+                                <textarea id="client-address" required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]"></textarea>
                             </div>
-                            <div class="flex-1 border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                                <i class="fas fa-certificate text-2xl text-gray-400 mb-1"></i><p class="text-xs">Certificate</p>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Service Address (If different)</label>
+                                <textarea id="client-service-address" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]"></textarea>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Billing Name</label>
+                                    <input type="text" id="client-billing-name" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Billing Address</label>
+                                    <input type="text" id="client-billing-address" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Step 3: Bank & Services</h3>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
-                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
-                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Branch</label>
-                            <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Expected Salary (Rs./hr)</label>
-                            <input type="number" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Service Type</label>
-                        <div class="flex items-center gap-6">
-                            <label class="flex items-center"><input type="checkbox" class="mr-2 text-[#82B366]"> Live-in (නැවතී සේවය)</label>
-                            <label class="flex items-center"><input type="checkbox" class="mr-2 text-[#82B366]"> Live-out (දිනපතා පැමිණීම)</label>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Bank Book</label>
-                        <div class="w-[150px] border-2 border-dashed border-gray-300 bg-white rounded-lg p-4 text-center cursor-pointer">
-                            <i class="fas fa-book text-2xl text-gray-400 mb-1"></i><p class="text-xs">Bank Book</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="bg-blue-50 p-6 rounded border border-blue-200 text-center">
-                    <h3 class="text-lg font-bold text-[#2C4A3B] mb-2">Step 4: Legal Declaration</h3>
-                    <p class="text-sm text-[#1E3A8A] mb-4">මා විසින් ඉහත සපයා ඇති සියලුම තොරතුරු සහ ලේඛන සත්‍ය හා නිවැරදි බවට මම මෙයින් සහතික කරමි. GOLDEN HAND CAREGIVERS හි නීති හා රෙගුලාසි වලට යටත් වීමට මා එකඟ වෙමි.</p>
-                    <div class="flex items-center justify-center">
+                    <div class="flex items-center mt-4">
                         <input type="checkbox" required class="w-4 h-4 text-[#82B366] border-gray-300 rounded">
+                        <label class="ml-2 text-sm font-bold text-gray-700">I Agree (මම එකඟ වෙමි)</label>
+                    </div>
+                    <button type="submit" id="btn-submit-client" class="w-full bg-[#82B366] text-white font-bold py-3 rounded hover:bg-[#6c9754] transition shadow-md mt-6">අවසන් කරන්න (Submit)</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- CAREGIVER KYC PAGE                         -->
+        <!-- ========================================== -->
+        <div id="kyc-caregiver-page" class="hidden pt-12 pb-20 bg-gray-50 min-h-screen fade-in">
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100 mt-10">
+                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2 border-b pb-4">ගිණුම් සත්‍යාපනය (Caregiver KYC)</h2>
+                <p class="text-gray-500 text-sm mb-6">Please complete all 4 steps carefully. / පියවර 4 ම නිවැරදිව පුරවන්න.</p>
+                <form id="form-caregiver-kyc" onsubmit="window.submitCaregiverKyc(event)" class="space-y-8">
+                    <!-- Step 1 -->
+                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 1: පුද්ගලික තොරතුරු</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">NIC Number</label><input type="text" id="cg-nic" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Gender</label><select id="cg-gender" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"><option>Female</option><option>Male</option></select></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label><input type="date" id="cg-dob" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                        </div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label><textarea id="cg-address" required rows="2" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></textarea></div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Upload NIC (Front & Back) & Selfie</label>
+                            <div class="flex gap-4 overflow-x-auto pb-2">
+                                <div onclick="document.getElementById('cg-nic-front').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                    <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p id="txt-cg-nic-front" class="text-xs">NIC Front</p>
+                                    <input type="file" id="cg-nic-front" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-nic-front').innerText='Selected'">
+                                </div>
+                                <div onclick="document.getElementById('cg-nic-back').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                    <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p id="txt-cg-nic-back" class="text-xs">NIC Back</p>
+                                    <input type="file" id="cg-nic-back" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-nic-back').innerText='Selected'">
+                                </div>
+                                <div onclick="document.getElementById('cg-selfie').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                    <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i><p id="txt-cg-selfie" class="text-xs">Selfie</p>
+                                    <input type="file" id="cg-selfie" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-selfie').innerText='Selected'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 2: වෘත්තීය සහ සෞඛ්‍ය</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Experience Years</label><input type="number" id="cg-exp" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Special Skills</label><input type="text" id="cg-skills" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Chronic Illnesses</label><input type="text" id="cg-illness" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Status</label><input type="text" id="cg-vaccine" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Upload Reports</label>
+                            <div class="flex gap-4">
+                                <div onclick="document.getElementById('cg-police').click()" class="flex-1 border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                    <i class="fas fa-file-alt text-2xl text-gray-400 mb-1"></i><p id="txt-cg-police" class="text-xs">Police Report</p>
+                                    <input type="file" id="cg-police" class="hidden" accept="image/*,.pdf" onchange="document.getElementById('txt-cg-police').innerText='Selected'">
+                                </div>
+                                <div onclick="document.getElementById('cg-cert').click()" class="flex-1 border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                    <i class="fas fa-certificate text-2xl text-gray-400 mb-1"></i><p id="txt-cg-cert" class="text-xs">Certificate</p>
+                                    <input type="file" id="cg-cert" class="hidden" accept="image/*,.pdf" onchange="document.getElementById('txt-cg-cert').innerText='Selected'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 3: බැංකු සහ සේවා</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label><input type="text" id="cg-bank-name" required class="w-full px-3 py-2 border rounded outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label><input type="text" id="cg-bank-acc" required class="w-full px-3 py-2 border rounded outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Branch</label><input type="text" id="cg-bank-branch" required class="w-full px-3 py-2 border rounded outline-none"></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Expected Salary (Rs./hr)</label><input type="number" id="cg-salary" required class="w-full px-3 py-2 border rounded outline-none"></div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Service Type</label>
+                            <div class="flex items-center gap-6">
+                                <label class="flex items-center cursor-pointer"><input type="checkbox" id="cg-livein" class="mr-2"> Live-in</label>
+                                <label class="flex items-center cursor-pointer"><input type="checkbox" id="cg-liveout" class="mr-2"> Live-out</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div onclick="document.getElementById('cg-bankbook').click()" class="w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                                <i class="fas fa-book text-2xl text-gray-400 mb-1"></i><p id="txt-cg-bankbook" class="text-xs">Bank Book</p>
+                                <input type="file" id="cg-bankbook" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-bankbook').innerText='Selected'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4 justify-center">
+                        <input type="checkbox" required class="w-4 h-4 text-[#82B366] rounded cursor-pointer">
                         <label class="ml-2 text-sm font-bold text-gray-700">මම ඉහත කොන්දේසි වලට එකඟ වෙමි.</label>
                     </div>
+                    <button type="submit" id="btn-submit-cg" class="w-full bg-[#82B366] text-white font-bold py-4 rounded hover:bg-[#6c9754] transition shadow-md text-lg">අවසන් කරන්න (Submit)</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PENDING APPROVAL PAGE                      -->
+        <!-- ========================================== -->
+        <div id="pending-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
+            <div class="max-w-md w-full bg-white px-8 py-12 rounded-xl shadow-lg border border-gray-50 text-center mt-10">
+                <div class="w-20 h-20 bg-[#fef08a] text-[#a16207] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-clock text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-4">Account Pending</h2>
+                <p class="text-gray-700 text-sm mb-1 leading-relaxed">ඔබගේ ගිණුම Admin අනුමැතිය සඳහා යොමු කර ඇත.</p>
+                <p class="text-gray-700 text-sm mb-2 leading-relaxed">කරුණාකර රැඳී සිටින්න.</p>
+                <p class="text-gray-600 text-sm mb-10">(Your account is pending Admin approval.)</p>
+                
+                <button onclick="window.handleLogout()" class="text-sm font-extrabold text-[#C19B54] underline hover:text-[#a88648] transition">Logout</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- APPROVED SUCCESS PAGE                      -->
+        <!-- ========================================== -->
+        <div id="approved-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
+            <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-green-100 text-center mt-10">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check-circle text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Approved! 🎉</h2>
+                <p class="text-gray-600 mb-8">ඔබගේ ගිණුම සාර්ථකව අනුමත කර ඇත.<br>(Your account has been successfully approved.)</p>
+                <button onclick="window.completeApproval()" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md mt-4">Continue to Home</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- REGISTRATION FEE PAGE (CLIENT ONLY)        -->
+        <!-- ========================================== -->
+        <div id="fee-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
+            <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg border border-blue-100 mt-10">
+                <div class="flex items-center gap-3 mb-6 border-b pb-4">
+                    <i class="fas fa-info-circle text-2xl text-[#2C4A3B]"></i>
+                    <h2 class="text-xl font-extrabold text-[#2C4A3B]">Pay Registration Fee</h2>
+                </div>
+                
+                <p class="text-gray-600 text-sm mb-4">ඔබගේ ගිණුම සක්‍රීය කිරීමට ලියාපදිංචි ගාස්තුව ගෙවන්න<br>(Pay the fee to activate your account)</p>
+                <h3 class="text-3xl font-extrabold text-[#82B366] mb-6 text-center">Rs. 1,000.00</h3>
+                
+                <div class="bg-[#F1F5F9] p-4 rounded-lg mb-6 border border-gray-200">
+                    <p class="font-bold text-sm text-gray-700 mb-2">අපගේ බැංකු ගිණුම් විස්තර:</p>
+                    <p class="text-sm">Bank: Seylan Bank</p>
+                    <p class="text-sm">Account Name: Golden Hand</p>
+                    <p class="text-lg font-extrabold text-[#2C4A3B] my-1">14 901 361 84 8000 1</p>
+                    <p class="text-sm">Branch: Katugasthota</p>
                 </div>
 
-                <button type="submit" class="w-full bg-[#82B366] text-white font-bold py-4 rounded hover:bg-[#6c9754] transition shadow-md text-lg">අවසන් කරන්න (Submit)</button>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- PENDING APPROVAL PAGE -->
-    <div id="pending-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
-        <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-gray-100 text-center">
-            <div class="w-20 h-20 bg-amber-100 text-[#C19B54] rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-clock text-4xl"></i>
+                <form id="form-fee" onsubmit="window.submitFee(event)">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">මුදල් ගෙවා රිසිට්පත මෙහි අප්ලෝඩ් කරන්න:</label>
+                    <div onclick="document.getElementById('fee-receipt-file').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100 mb-6 relative">
+                        <i class="fas fa-plus-circle text-3xl text-gray-400 mb-2"></i>
+                        <p id="txt-fee-receipt" class="text-sm text-gray-600">Tap to select receipt</p>
+                        <input type="file" id="fee-receipt-file" required accept="image/*" class="hidden" onchange="document.getElementById('txt-fee-receipt').innerText='Selected'">
+                    </div>
+                    <button type="submit" id="btn-submit-fee" class="w-full bg-[#0EA5E9] text-white font-bold py-3 rounded hover:bg-[#0284c7] transition shadow-md">Submit Receipt</button>
+                </form>
+                <button onclick="window.handleLogout()" class="w-full text-center text-sm font-bold text-[#C19B54] mt-4 underline hover:text-[#a88648]">Logout</button>
             </div>
-            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Pending</h2>
-            <p class="text-gray-600 mb-8">ඔබගේ ගිණුම Admin අනුමැතිය සඳහා යොමු කර ඇත. කරුණාකර රැඳී සිටින්න. (Your account is pending Admin approval.)</p>
-            
-            <!-- Dev button to simulate admin approval -->
-            <button onclick="simulateAdminApproval()" class="text-xs text-gray-400 border border-gray-200 px-3 py-1 rounded hover:bg-gray-100">
-                <i class="fas fa-code"></i> Developer: Simulate Admin Approval
-            </button>
         </div>
-    </div>
 
+    </div> <!-- END APP CONTAINER -->
 
-    <!-- APPROVED & LOGIN PAGE -->
-    <div id="approved-login-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
-        <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-green-100 text-center">
-            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-check-circle text-4xl"></i>
-            </div>
-            <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Approved! 🎉</h2>
-            <p class="text-gray-600 mb-8">ඔබගේ ගිණුම අනුමත කර ඇත. කරුණාකර නැවත ලොග් වන්න.</p>
-            
-            <form onsubmit="handleApprovedLogin(event)" class="text-left space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" id="approved-email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="approved-password" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-[#C19B54]">
-                </div>
-                <button type="submit" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md mt-4">Login</button>
-            </form>
-        </div>
-    </div>
+    <!-- ========================================== -->
+    <!-- REAL FIREBASE LOGIC INTEGRATION            -->
+    <!-- ========================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, addDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
 
-
-    <!-- REGISTRATION FEE PAGE (CLIENT ONLY) -->
-    <div id="fee-page" class="hidden pt-32 pb-20 bg-gray-50 min-h-screen fade-in flex items-center justify-center">
-        <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg border border-blue-100">
-            <div class="flex items-center gap-3 mb-6 border-b pb-4">
-                <i class="fas fa-info-circle text-2xl text-[#2C4A3B]"></i>
-                <h2 class="text-xl font-extrabold text-[#2C4A3B]">Pay Registration Fee</h2>
-            </div>
-            
-            <p class="text-gray-600 text-sm mb-4">ඔබගේ ගිණුම සක්‍රීය කිරීමට ලියාපදිංචි ගාස්තුව ගෙවන්න (Pay the fee to activate your account)</p>
-            <h3 class="text-3xl font-extrabold text-[#82B366] mb-6 text-center">Rs. 1,000.00</h3>
-            
-            <div class="bg-[#F1F5F9] p-4 rounded-lg mb-6 border border-gray-200">
-                <p class="font-bold text-sm text-gray-700 mb-2">අපගේ බැංකු ගිණුම් විස්තර:</p>
-                <p class="text-sm">Bank: Seylan Bank</p>
-                <p class="text-sm">Account Name: Golden Hand</p>
-                <p class="text-lg font-extrabold text-[#2C4A3B] my-1">14 901 361 84 8000 1</p>
-                <p class="text-sm">Branch: Katugasthota</p>
-            </div>
-
-            <form onsubmit="submitFee(event)">
-                <label class="block text-sm font-bold text-gray-700 mb-2">මුදල් ගෙවා රිසිට්පත මෙහි අප්ලෝඩ් කරන්න:</label>
-                <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100 mb-6 relative">
-                    <i class="fas fa-plus-circle text-3xl text-gray-400 mb-2"></i>
-                    <p class="text-sm text-gray-600">Tap to select receipt</p>
-                    <input type="file" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                </div>
-                <button type="submit" class="w-full bg-[#0EA5E9] text-white font-bold py-3 rounded hover:bg-[#0284c7] transition shadow-md">Submit Receipt</button>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- PAGE ROUTING & LOGIC -->
-    <script>
-        // Data Store (Simulating DB flow for UI presentation)
-        let currentUserData = {
-            role: 'CLIENT', // Default
-            email: '',
-            password: '',
-            status: 'NONE' // NONE -> PENDING -> APPROVED -> ACTIVE
+        // Your Firebase Web App Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjLaQSVtIk8w3nWve7PF5PwbtxGzjIogI",
+            authDomain: "care-2a20d.firebaseapp.com",
+            projectId: "care-2a20d",
+            storageBucket: "care-2a20d.firebasestorage.app",
+            messagingSenderId: "283184840115",
+            appId: "1:283184840115:web:b6ac6008156bba31461fc6",
+            measurementId: "G-JSEQW56Y4Z"
         };
 
-        // UI Router
-        function showPage(pageId) {
-            const pages = [
-                'main-landing-page', 
-                'auth-page', 
-                'kyc-client-page', 
-                'kyc-caregiver-page',
-                'pending-page',
-                'approved-login-page',
-                'fee-page'
-            ];
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+        const fbAppId = '1:283184840115:web:b6ac6008156bba31461fc6';
+
+        // 1. Load Top Caregivers Function
+        const loadTopCaregivers = async () => {
+            try {
+                const usersSnap = await getDocs(collection(db, "users"));
+                let caregivers = [];
+                usersSnap.forEach(d => {
+                    const u = d.data();
+                    if (u.role === 'CAREGIVER' && u.kycStatus === 'APPROVED') {
+                        caregivers.push(u);
+                    }
+                });
+                
+                caregivers.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                const topCaregivers = caregivers.slice(0, 3); // Get top 3
+
+                const reviewsSnap = await getDocs(collection(db, "reviews"));
+                let allReviews = [];
+                reviewsSnap.forEach(d => allReviews.push(d.data()));
+
+                const container = document.getElementById('top-caregivers-grid');
+                if (!container) return;
+                
+                if (topCaregivers.length === 0) {
+                    container.innerHTML = `<div class="col-span-3 text-center py-10 text-gray-500">දැනට සේවකයින් නොමැත.</div>`;
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                topCaregivers.forEach(cg => {
+                    const cgReviews = allReviews.filter(r => r.caregiverId === cg.id);
+                    const topReview = cgReviews.length > 0 ? cgReviews[0] : null;
+                    
+                    const rating = (cg.rating || 0).toFixed(1);
+                    const reviewText = topReview ? `"${topReview.comment}"` : "ඉතා හොඳ සේවාවක් සපයයි.";
+                    const reviewerName = topReview ? `- ${topReview.clientName}` : "";
+                    
+                    let imgHtml = '';
+                    if (cg.profileImageUrl) {
+                        imgHtml = `<img src="${cg.profileImageUrl}" class="w-24 h-24 rounded-full object-cover border-4 border-[#C19B54] mb-4 shadow-md">`;
+                    } else {
+                        const initial = cg.name ? cg.name.charAt(0).toUpperCase() : '?';
+                        imgHtml = `<div class="w-24 h-24 rounded-full bg-[#E2E8F0] flex items-center justify-center border-4 border-[#C19B54] mb-4 shadow-md"><span class="text-3xl font-bold text-gray-500">${initial}</span></div>`;
+                    }
+
+                    const card = `
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center text-center transform transition duration-300 hover:-translate-y-2 w-full max-w-[300px]">
+                            ${imgHtml}
+                            <h3 class="text-lg font-bold text-[#10213b]">${cg.name}</h3>
+                            <div class="flex items-center justify-center gap-1 my-2 text-[#F59E0B]">
+                                <span class="font-bold text-gray-800 mr-1">${rating}</span>
+                                <i class="fas fa-star"></i>
+                                <span class="text-xs text-gray-500 ml-1">(${cg.reviewCount || 0} reviews)</span>
+                            </div>
+                            <p class="text-[12px] text-gray-600 italic mt-3 min-h-[40px]">
+                                ${reviewText}
+                                <br><span class="font-semibold text-[#82B366] text-[10px] block mt-1">${reviewerName}</span>
+                            </p>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            } catch (err) {
+                console.error("Error loading top caregivers:", err);
+            }
+        };
+
+        // Initialize Anonymous Auth for Live Chat and Session isolation
+        const initAuth = async () => {
+            // Generate a unique session ID for anonymous users per browser tab session
+            let anonSessionId = sessionStorage.getItem('chat_tab_session_id');
+            if (!anonSessionId) {
+                anonSessionId = crypto.randomUUID();
+                sessionStorage.setItem('chat_tab_session_id', anonSessionId);
+            }
+
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else if (!auth.currentUser) {
+                await signInAnonymously(auth);
+            }
             
-            pages.forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            
+            // Load the new section data
+            loadTopCaregivers();
+        };
+        initAuth();
+
+        // Helper for Image Compression
+        const compressImage = (file) => new Promise((resolve, reject) => {
+            if (!file) return resolve(null);
+            if (file.type === "application/pdf") {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                return;
+            }
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 600;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.5));
+                };
+                img.onerror = error => reject(error);
+            };
+            reader.onerror = error => reject(error);
+        });
+
+        // ------------------ Routing & View Logic ------------------ //
+        window.showPage = (pageId) => {
+            const pages = ['main-landing-page', 'auth-page', 'kyc-client-page', 'kyc-caregiver-page', 'pending-page', 'approved-page', 'fee-page'];
+            pages.forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Auth Tabs Toggle
-        function setAuthMode(mode) {
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const tabLogin = document.getElementById('tab-login');
-            const tabRegister = document.getElementById('tab-register');
-
-            if (mode === 'login') {
-                loginForm.classList.remove('hidden');
-                registerForm.classList.add('hidden');
-                
-                tabLogin.classList.replace('text-gray-400', 'text-[#C19B54]');
-                tabLogin.classList.replace('border-transparent', 'border-[#C19B54]');
-                tabRegister.classList.replace('text-[#C19B54]', 'text-gray-400');
-                tabRegister.classList.replace('border-[#C19B54]', 'border-transparent');
-            } else {
-                loginForm.classList.add('hidden');
-                registerForm.classList.remove('hidden');
-                
-                tabRegister.classList.replace('text-gray-400', 'text-[#C19B54]');
-                tabRegister.classList.replace('border-transparent', 'border-[#C19B54]');
-                tabLogin.classList.replace('text-[#C19B54]', 'text-gray-400');
-                tabLogin.classList.replace('border-[#C19B54]', 'border-transparent');
-            }
-        }
-
-        // Actions
-        function handleLogin(e) {
-            e.preventDefault();
-            alert("ගිණුමක් තවම සාදා නැත. කරුණාකර Sign Up වන්න.");
-            setAuthMode('register');
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const termsChecked = document.getElementById('reg-terms').checked;
-            if(!termsChecked) return;
-
-            currentUserData.email = document.getElementById('reg-email').value;
-            currentUserData.password = document.getElementById('reg-password').value;
-            currentUserData.role = document.getElementById('role-caregiver').checked ? 'CAREGIVER' : 'CLIENT';
-            
-            alert("Account Created successfully! Please complete KYC verification.");
-
-            if (currentUserData.role === 'CLIENT') {
-                showPage('kyc-client-page');
-            } else {
-                showPage('kyc-caregiver-page');
-            }
-        }
-
-        function submitClientKyc(e) {
-            e.preventDefault();
-            currentUserData.status = 'PENDING';
-            showPage('pending-page');
-        }
-
-        function submitCaregiverKyc(e) {
-            e.preventDefault();
-            currentUserData.status = 'PENDING';
-            showPage('pending-page');
-        }
-
-        // Developer hook to simulate the admin approving the account in real app
-        function simulateAdminApproval() {
-            currentUserData.status = 'APPROVED';
-            showPage('approved-login-page');
-        }
-
-        function handleApprovedLogin(e) {
-            e.preventDefault();
-            
-            // Verify fake credentials matching
-            const checkEmail = document.getElementById('approved-email').value;
-            const checkPass = document.getElementById('approved-password').value;
-            
-            if (checkEmail === currentUserData.email && checkPass === currentUserData.password) {
-                if (currentUserData.role === 'CLIENT') {
-                    showPage('fee-page');
-                } else {
-                    alert("Welcome Caregiver! Account fully activated. \n(Dashboard will load here in real app)");
-                    showPage('main-landing-page');
+        window.goToSection = (sectionId) => {
+            if (auth.currentUser && !auth.currentUser.isAnonymous) {
+                const pg = document.getElementById('pending-page');
+                const fg = document.getElementById('fee-page');
+                const ap = document.getElementById('approved-page');
+                if (!pg.classList.contains('hidden') || !fg.classList.contains('hidden') || !ap.classList.contains('hidden')) {
+                    alert("කරුණාකර ගිණුම් කටයුතු අවසන් කරන්න. / Please complete account setup.");
+                    return;
                 }
+            }
+            window.showPage('main-landing-page');
+            setTimeout(() => {
+                const el = document.getElementById(sectionId);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        window.setAuthMode = (mode) => {
+            if (mode === 'login') {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('register-form').classList.add('hidden');
+                document.getElementById('tab-login').className = "flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition";
+                document.getElementById('tab-register').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
             } else {
-                alert("Incorrect Email or Password.");
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('register-form').classList.remove('hidden');
+                document.getElementById('tab-register').className = "flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition";
+                document.getElementById('tab-login').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
             }
         }
 
-        function submitFee(e) {
-            e.preventDefault();
-            currentUserData.status = 'ACTIVE';
-            alert("Payment Receipt Submitted! \nYour Client account is fully active. \n(Dashboard will load here in real app)");
-            showPage('main-landing-page');
+        const updateNavForUser = (user, userData) => {
+            const authContainer = document.getElementById('nav-auth-container');
+            if (user && !user.isAnonymous && userData) {
+                authContainer.innerHTML = `
+                    <div class="ml-4 flex items-center gap-3">
+                        <span class="text-[#2C4A3B] font-bold text-[12px]">Hi, ${userData.name.split(' ')[0]}</span>
+                        <a href="javascript:void(0)" onclick="window.handleLogout()" class="flex items-center gap-1.5 text-white bg-red-600 px-2.5 py-1.5 hover:bg-red-700 transition rounded-sm text-[11px] font-bold">
+                            <i class="fas fa-sign-out-alt"></i> LOGOUT
+                        </a>
+                    </div>`;
+                window.currentUserName = userData.name;
+            } else {
+                authContainer.innerHTML = `
+                    <a href="javascript:void(0)" onclick="window.showPage('auth-page'); window.setAuthMode('login');" class="ml-4 flex items-center gap-1.5 text-[#2C4A3B] border border-[#2C4A3B] px-2.5 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
+                        <i class="fas fa-user"></i> LOGIN / REGISTER
+                    </a>`;
+                window.currentUserName = "Visitor";
+            }
         }
 
-        function simulateGoogleLogin() {
-            alert("Google Sign In Interface would open here.");
-            // Simulating successful generic user role selection
-            currentUserData.role = 'CLIENT';
-            showPage('kyc-client-page');
-        }
-    </script>
-
-    <!-- 
-    ========================================================================
-    FIREBASE INTEGRATION (PRODUCTION READY)
-    ========================================================================
-    මෙම කොටස ඔබගේ cPanel එකට දැමූ පසු ඔබගේ සත්‍ය Firebase Database එකට
-    සම්බන්ධ වීමට භාවිත කරන්න.
-    -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // *** YOUR FIREBASE CONFIG GOES HERE ***
-        const firebaseConfig = {
-            apiKey: "",
-            authDomain: "your-project-id.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project-id.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
+        // Toggle Chat Box
+        window.toggleChat = () => {
+            const win = document.getElementById('chat-window');
+            win.style.display = (win.style.display === 'flex' ? 'none' : 'flex');
         };
 
-        try {
-            // Initialize Firebase
-            const appConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
-            const app = initializeApp(appConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
+        // ------------------ Auth & Chat Listeners ------------------ //
+        let userDocUnsubscribe = null;
+        let chatUnsubscribe = null;
 
-            // Make it globally available if you want to connect the UI elements directly to Firebase
-            window.firebaseDB = db;
-            window.firebaseAuth = auth;
-            
-            /* Example Real Firebase Setup:
-             To connect the above UI forms directly to Firebase, you would replace the 
-             `handleRegister` and `submitKyc` functions above with calls like:
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch(e) {
+                    console.error("Auth initialization error:", e);
+                }
+                return; 
+            }
 
-             createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
-                 setDoc(doc(db, "users", userCred.user.uid), {
-                     email: email,
-                     role: "CLIENT",
-                     isVerified: false
-                 });
-             });
-            */
+            // Initialize Live Chat listener for this session
+            if (chatUnsubscribe) chatUnsubscribe();
+            const messagesRef = collection(db, 'artifacts', fbAppId, 'public', 'data', 'messages');
             
-        } catch(error) {
-            console.warn("Firebase initialization skipped or failed. Using UI Simulation mode.", error);
+            chatUnsubscribe = onSnapshot(messagesRef, (snapshot) => {
+                const msgs = [];
+                snapshot.forEach(doc => msgs.push(doc.data()));
+                
+                // Use Tab Session ID for Anonymous, otherwise Use UID
+                const chatSessionId = user.isAnonymous ? sessionStorage.getItem('chat_tab_session_id') : user.uid;
+                
+                const myMsgs = msgs.filter(m => m.sessionId === chatSessionId).sort((a,b) => a.timestamp - b.timestamp);
+                
+                const chatBox = document.getElementById('chat-messages');
+                if(!chatBox) return;
+                
+                chatBox.innerHTML = '<div class="text-left"><span class="bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm">Hello! How can we help you today? 👋<br><span class="text-[9px] text-gray-400 mt-1 block">Golden Hand Support</span></span></div>';
+                
+                myMsgs.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = m.isAdmin ? "text-left" : "text-right";
+                    const span = document.createElement('span');
+                    span.className = m.isAdmin 
+                        ? "bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm max-w-[85%]" 
+                        : "bg-[#10213b] text-white text-[12px] px-3 py-2 rounded-bl-xl rounded-br-xl rounded-tl-xl inline-block shadow-sm max-w-[85%]";
+                    span.innerHTML = m.text;
+                    div.appendChild(span);
+                    chatBox.appendChild(div);
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            if (user.isAnonymous) {
+                updateNavForUser(user, null);
+                window.showPage('main-landing-page');
+                return;
+            }
+
+            if (userDocUnsubscribe) userDocUnsubscribe();
+            userDocUnsubscribe = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    updateNavForUser(user, data);
+
+                    if (data.isVerified) {
+                        window.showPage('main-landing-page');
+                    } else if (data.kycStatus === "FEE_PENDING") {
+                        window.showPage('fee-page');
+                    } else if (data.kycStatus === "PENDING") {
+                        window.showPage('pending-page');
+                    } else if (data.kycStatus === "APPROVED") {
+                        if (!data.isVerified) {
+                            window.showPage('approved-page');
+                        } else {
+                            window.showPage('main-landing-page');
+                        }
+                    } else {
+                        if (data.role === "CLIENT") window.showPage('kyc-client-page');
+                        else window.showPage('kyc-caregiver-page');
+                    }
+                } else {
+                    updateNavForUser(user, null);
+                    window.showPage('main-landing-page');
+                }
+            });
+        });
+
+        // ------------------ Live Chat Function ------------------ //
+        window.sendChatMessage = async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if(!text) return;
+            input.value = '';
+
+            const chatSessionId = user.isAnonymous ? sessionStorage.getItem('chat_tab_session_id') : user.uid;
+
+            try {
+                await setDoc(doc(db, 'artifacts', fbAppId, 'public', 'data', 'messages', crypto.randomUUID()), {
+                    text: text,
+                    senderId: chatSessionId,
+                    sessionId: chatSessionId,
+                    senderName: window.currentUserName || "Visitor",
+                    isAdmin: false,
+                    timestamp: Date.now()
+                });
+            } catch(err) {
+                console.error(err);
+            }
+        };
+
+        // ------------------ Auth Functions ------------------ //
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            btn.innerHTML = "Please wait..."; btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
+                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat when real user logs in
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "Sign In"; btn.disabled = false;
+            }
+        }
+
+        window.handleRegister = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            btn.innerHTML = "Creating Account..."; btn.disabled = true;
+            try {
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const pass = document.getElementById('reg-password').value;
+                const role = document.getElementById('role-caregiver').checked ? 'CAREGIVER' : 'CLIENT';
+
+                const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", userCred.user.uid), {
+                    id: userCred.user.uid,
+                    name: name,
+                    email: email,
+                    role: role,
+                    isVerified: false,
+                    kycStatus: "NONE",
+                    walletBalance: 0.0
+                });
+                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "Create Account"; btn.disabled = false;
+            }
+        }
+
+        window.handleGoogleLogin = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                
+                if (!docSnap.exists()) {
+                    await setDoc(doc(db, "users", user.uid), {
+                        id: user.uid,
+                        name: user.displayName || "No Name",
+                        email: user.email || "",
+                        role: "CLIENT", 
+                        isVerified: false,
+                        kycStatus: "NONE",
+                        walletBalance: 0.0
+                    });
+                }
+                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            sessionStorage.removeItem('chat_tab_session_id'); // Regenerate new anon session
+            await signInAnonymously(auth);
+        }
+
+        window.completeApproval = async () => {
+            try {
+                if(auth.currentUser) {
+                    await updateDoc(doc(db, "users", auth.currentUser.uid), { isVerified: true });
+                }
+            } catch(e) { console.error(e); }
+            window.showPage('main-landing-page');
+        }
+
+        // ------------------ KYC & Fee Functions ------------------ //
+        window.submitClientKyc = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-client');
+            
+            try {
+                const f1Input = document.getElementById('client-nic-front').files[0];
+                const f2Input = document.getElementById('client-nic-back').files[0];
+                const f3Input = document.getElementById('client-selfie').files[0];
+                
+                if (!f1Input || !f2Input || !f3Input) {
+                    alert("කරුණාකර NIC සහ Selfie ඡායාරූප සියල්ල අප්ලෝඩ් කරන්න.");
+                    return;
+                }
+                
+                btn.innerHTML = "Uploading..."; btn.disabled = true;
+
+                const f1 = await compressImage(f1Input);
+                const f2 = await compressImage(f2Input);
+                const f3 = await compressImage(f3Input);
+
+                await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                    kycStatus: "FEE_PENDING",
+                    nicNumber: document.getElementById('client-nic').value,
+                    dob: document.getElementById('client-dob').value,
+                    address: document.getElementById('client-address').value,
+                    serviceAddress: document.getElementById('client-service-address').value || document.getElementById('client-address').value,
+                    billingName: document.getElementById('client-billing-name').value,
+                    billingAddress: document.getElementById('client-billing-address').value,
+                    nicFrontUrl: f1 || "",
+                    nicBackUrl: f2 || "",
+                    selfieUrl: f3 || ""
+                });
+                
+                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
+            }
+        }
+
+        window.submitCaregiverKyc = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-cg');
+            
+            try {
+                const reqFiles = ['cg-nic-front', 'cg-nic-back', 'cg-selfie', 'cg-bankbook'];
+                for(let id of reqFiles) {
+                    if(!document.getElementById(id).files[0]) {
+                        alert("කරුණාකර NIC, Selfie සහ Bank Book අනිවාර්යයෙන් අප්ලෝඩ් කරන්න.");
+                        return;
+                    }
+                }
+                
+                btn.innerHTML = "Uploading..."; btn.disabled = true;
+
+                const fNicF = await compressImage(document.getElementById('cg-nic-front').files[0]);
+                const fNicB = await compressImage(document.getElementById('cg-nic-back').files[0]);
+                const fSelfie = await compressImage(document.getElementById('cg-selfie').files[0]);
+                const fPol = await compressImage(document.getElementById('cg-police').files[0]);
+                const fCert = await compressImage(document.getElementById('cg-cert').files[0]);
+                const fBank = await compressImage(document.getElementById('cg-bankbook').files[0]);
+
+                const prefTypes = [];
+                if(document.getElementById('cg-livein').checked) prefTypes.push("Live-in");
+                if(document.getElementById('cg-liveout').checked) prefTypes.push("Live-out");
+
+                const salary = parseFloat(document.getElementById('cg-salary').value) || 0.0;
+
+                await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                    kycStatus: "PENDING",
+                    nicNumber: document.getElementById('cg-nic').value,
+                    gender: document.getElementById('cg-gender').value,
+                    dob: document.getElementById('cg-dob').value,
+                    address: document.getElementById('cg-address').value,
+                    experienceYears: document.getElementById('cg-exp').value,
+                    specialSkills: document.getElementById('cg-skills').value,
+                    chronicIllnesses: document.getElementById('cg-illness').value,
+                    vaccinationStatus: document.getElementById('cg-vaccine').value,
+                    bankName: document.getElementById('cg-bank-name').value,
+                    bankAccountNumber: document.getElementById('cg-bank-acc').value,
+                    bankBranch: document.getElementById('cg-bank-branch').value,
+                    expectedSalary: salary,
+                    hourlyRate: salary,
+                    preferredServiceTypes: prefTypes,
+                    nicFrontUrl: fNicF || "",
+                    nicBackUrl: fNicB || "",
+                    selfieUrl: fSelfie || "",
+                    profileImageUrl: fSelfie || "",
+                    policeClearanceUrl: fPol || "",
+                    certificateUrl: fCert || "",
+                    bankBookUrl: fBank || ""
+                });
+                
+                alert("සාර්ථකව අප්ලෝඩ් කරන ලදී. Admin අනුමත කරන තෙක් රැඳී සිටින්න.");
+                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
+            }
+        }
+
+        // ------------------ Fee Function ------------------ //
+        window.submitFee = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-fee');
+            
+            try {
+                const feeFile = document.getElementById('fee-receipt-file').files[0];
+                if (!feeFile) {
+                    alert("කරුණාකර රිසිට්පත අප්ලෝඩ් කරන්න.");
+                    return;
+                }
+                
+                btn.innerHTML = "Uploading..."; btn.disabled = true;
+                const receiptB64 = await compressImage(feeFile);
+
+                await setDoc(doc(db, "transactions", crypto.randomUUID()), {
+                    userId: auth.currentUser.uid,
+                    amount: 1000.0,
+                    type: "FEE",
+                    description: "Client Registration Fee",
+                    receiptUrl: receiptB64 || "",
+                    timestamp: Date.now()
+                });
+                
+                await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                    kycStatus: "PENDING"
+                });
+                
+                alert("Payment receipt submitted successfully! Please wait for Admin approval.");
+                btn.innerHTML = "Submit Receipt"; btn.disabled = false;
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "Submit Receipt"; btn.disabled = false;
+            }
         }
     </script>
 </body>
