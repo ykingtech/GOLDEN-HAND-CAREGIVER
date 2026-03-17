@@ -151,7 +151,7 @@
                     <!-- Hero Image -->
                     <div class="md:w-[50%] h-full relative flex justify-center items-end">
                         <div class="absolute w-[65%] h-[80%] border-[4px] border-[#C19B54] top-4 left-[20%] -z-10 bg-transparent"></div>
-                        <img src="IMG_5925.JPG.jpeg" alt="Professional Caregiver" class="h-[105%] object-cover object-top relative z-10 image-fade-bottom scale-105 origin-bottom drop-shadow-xl">
+                        <img src="Gemini_Generated_Image_atknawatknawatkn.jpg" alt="Professional Caregiver" class="h-[105%] object-cover object-top relative z-10 image-fade-bottom scale-105 origin-bottom drop-shadow-xl">
                     </div>
                 </div>
             </section>
@@ -279,7 +279,7 @@
         <!-- AUTHENTICATION PAGE                        -->
         <!-- ========================================== -->
         <div id="auth-page" class="hidden pt-12 pb-20 bg-grid min-h-[80vh] fade-in">
-            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100 mt-10">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100 mt-10 relative">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-extrabold text-[#2C4A3B] uppercase tracking-wide">GOLDEN HAND</h2>
                     <p class="text-[#82B366] font-bold mt-1">CAREGIVERS</p>
@@ -353,6 +353,40 @@
                         <label for="reg-terms" class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-[#C19B54] font-bold">Terms and Conditions</a></label>
                     </div>
                     <button type="submit" id="btn-register" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded hover:bg-[#a88648] transition shadow-md">Create Account</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- NEW: Google Role Selection Modal (For New Users Only) -->
+        <div id="google-role-modal" class="hidden fixed inset-0 bg-black/60 z-[1000] flex items-center justify-center fade-in backdrop-blur-sm px-4">
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-[#F8FAFC] rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#C19B54] shadow-sm">
+                        <i class="fab fa-google text-2xl text-[#C19B54]"></i>
+                    </div>
+                    <h3 class="text-xl font-extrabold text-[#2C4A3B]">Welcome!</h3>
+                    <p class="text-sm text-gray-500 mt-2">Please select your account type to continue.</p>
+                </div>
+                <form onsubmit="window.submitGoogleRole(event)">
+                    <div class="space-y-3 mb-6">
+                        <label class="flex items-center p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#82B366] hover:bg-green-50 transition">
+                            <input type="radio" name="google-role" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366] w-4 h-4 ml-2">
+                            <div class="ml-4">
+                                <span class="block text-sm font-bold text-gray-800">Client (සේවාදායක)</span>
+                                <span class="block text-xs text-gray-500">I need care services</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#82B366] hover:bg-green-50 transition">
+                            <input type="radio" name="google-role" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366] w-4 h-4 ml-2">
+                            <div class="ml-4">
+                                <span class="block text-sm font-bold text-gray-800">Caregiver (සාත්තු සේවක)</span>
+                                <span class="block text-xs text-gray-500">I want to provide care</span>
+                            </div>
+                        </label>
+                    </div>
+                    <button type="submit" id="btn-google-role" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded-lg hover:bg-[#a88648] transition shadow-md text-sm">
+                        Continue to Dashboard
+                    </button>
                 </form>
             </div>
         </div>
@@ -618,6 +652,8 @@
         const analytics = getAnalytics(app);
         const fbAppId = '1:283184840115:web:b6ac6008156bba31461fc6';
 
+        let pendingGoogleUser = null; // 🌟 Store Google user details temporarily if they are new
+
         // 1. Load Top Caregivers Function
         const loadTopCaregivers = async () => {
             try {
@@ -857,7 +893,10 @@
 
             if (user.isAnonymous) {
                 updateNavForUser(user, null);
-                window.showPage('main-landing-page');
+                // Only redirect if not already on the auth page to avoid interrupting login
+                if(document.getElementById('auth-page').classList.contains('hidden')) {
+                    window.showPage('main-landing-page');
+                }
                 return;
             }
 
@@ -867,6 +906,7 @@
                     const data = docSnap.data();
                     updateNavForUser(user, data);
 
+                    // Routing based on user state
                     if (data.isVerified) {
                         window.showPage('main-landing-page');
                     } else if (data.kycStatus === "FEE_PENDING") {
@@ -884,8 +924,9 @@
                         else window.showPage('kyc-caregiver-page');
                     }
                 } else {
+                    // If doc doesn't exist, it might be a pending Google login waiting for role selection.
+                    // Do nothing here, let the modal handle it.
                     updateNavForUser(user, null);
-                    window.showPage('main-landing-page');
                 }
             });
         });
@@ -957,6 +998,7 @@
             }
         }
 
+        // 🌟 NEW: Google Login with Role Selection
         window.handleGoogleLogin = async () => {
             const provider = new GoogleAuthProvider();
             try {
@@ -965,19 +1007,51 @@
                 const docSnap = await getDoc(doc(db, "users", user.uid));
                 
                 if (!docSnap.exists()) {
-                    await setDoc(doc(db, "users", user.uid), {
+                    // New Google User - show role selection modal
+                    pendingGoogleUser = {
                         id: user.uid,
                         name: user.displayName || "No Name",
-                        email: user.email || "",
-                        role: "CLIENT", 
-                        isVerified: false,
-                        kycStatus: "NONE",
-                        walletBalance: 0.0
-                    });
+                        email: user.email || ""
+                    };
+                    document.getElementById('google-role-modal').classList.remove('hidden');
+                } else {
+                    // Existing User - already has a role, just clear anon chat
+                    sessionStorage.removeItem('chat_tab_session_id');
                 }
-                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
             } catch (err) {
                 alert(err.message);
+            }
+        }
+
+        // 🌟 NEW: Submit Role for New Google User
+        window.submitGoogleRole = async (e) => {
+            e.preventDefault();
+            if (!pendingGoogleUser) return;
+
+            const btn = document.getElementById('btn-google-role');
+            btn.innerHTML = "Creating Account..."; btn.disabled = true;
+
+            try {
+                const selectedRole = document.querySelector('input[name="google-role"]:checked').value;
+                
+                await setDoc(doc(db, "users", pendingGoogleUser.id), {
+                    id: pendingGoogleUser.id,
+                    name: pendingGoogleUser.name,
+                    email: pendingGoogleUser.email,
+                    role: selectedRole, 
+                    isVerified: false,
+                    kycStatus: "NONE",
+                    walletBalance: 0.0
+                });
+                
+                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
+                document.getElementById('google-role-modal').classList.add('hidden');
+                pendingGoogleUser = null; // Clear pending state
+                
+                // The onSnapshot listener will automatically detect the new user doc and route to KYC
+            } catch (err) {
+                alert(err.message);
+                btn.innerHTML = "Continue to Dashboard"; btn.disabled = false;
             }
         }
 
