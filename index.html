@@ -1,1211 +1,1032 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Hand Caregivers | Professional Care Service</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Golden Hand Caregivers | Premium Caregiving Services & Investor Portal</title>
+    <meta name="description" content="Top-quality care for your loved ones. Contact us today for experienced caregivers for elderly care, patient care, and baby care in Sri Lanka.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'], 
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0A2540',     /* Deep Blue */
+                            blueDark: '#061727', 
+                            green: '#22C55E',    /* Emerald Green */
+                            greenDark: '#16A34A',
+                            greenLight: '#DCFCE7',
+                            light: '#F8FAFC'     
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { background-color: #ffffff; }
-        .app-container { width: 100%; min-height: 100vh; position: relative; overflow-x: hidden; }
-        .bg-grid {
+        /* Main Site Styles */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            color: #22C55E; 
+        }
+        .tab-active {
+            background-color: white;
+            color: #0A2540;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            font-weight: 700;
+        }
+        .tab-inactive {
             background-color: transparent;
-            background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
-            background-size: 40px 40px;
+            color: #64748B;
+            font-weight: 500;
         }
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        /* Investor Portal Styles (Glassmorphism) */
+        .investor-bg {
+            background-color: #f0f4f8;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-        .image-fade-bottom {
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
-        /* Custom Scrollbar for Chat */
-        .chat-scroll::-webkit-scrollbar { width: 5px; }
-        .chat-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
-        
-        /* Floating Chat Styles */
-        #floating-chat-container {
-            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
-            display: flex; flex-direction: column; align-items: flex-end;
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
-        #chat-window {
-            width: 320px; height: 400px; background: white; border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: none; flex-direction: column;
-            overflow: hidden; border: 1px solid #e5e7eb; margin-bottom: 15px;
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 25px 50px -12px rgba(34, 197, 94, 0.25); /* Greenish shadow */
+            z-index: 50;
+            border-color: #22C55E;
         }
-        #chat-toggle-btn {
-            width: 60px; height: 60px; border-radius: 50%; background: #10213b;
-            color: white; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s;
+        .roadmap-container {
+            background: linear-gradient(135deg, #0A2540 0%, #061727 100%);
+            border-radius: 2rem;
+            position: relative;
+            overflow: hidden;
         }
-        #chat-toggle-btn:hover { transform: scale(1.05); background: #2C4A3B; }
+        .glow-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
-<body class="text-gray-800 font-sans">
+<body class="bg-brand-light text-slate-800 antialiased font-sans">
 
-    <div class="app-container">
-        <!-- Navigation Bar -->
-        <nav class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
-            <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div class="flex justify-between items-center h-[90px]">
-                    <!-- Logo -->
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="window.goToSection('home')">
-                        <div class="w-[50px] h-[50px] rounded-full border-[2px] border-[#82B366] flex flex-col items-center justify-center text-[#2C4A3B] relative bg-white">
-                            <i class="fas fa-plus text-[8px] text-[#82B366] absolute top-1.5"></i>
-                            <i class="fas fa-hands-holding text-[16px] text-[#2C4A3B] mt-1"></i>
-                            <svg class="absolute inset-0 w-full h-full animate-[spin_20s_linear_infinite]" viewBox="0 0 100 100">
-                                <path d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" id="circle" fill="none"/>
-                                <text class="text-[8.5px] font-bold uppercase fill-[#2C4A3B] tracking-widest"><textPath href="#circle">Golden Hand Caregivers</textPath></text>
-                            </svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[22px] font-extrabold text-[#2C4A3B] tracking-wide leading-none">GOLDEN HAND</span>
-                            <span class="text-[13px] font-bold text-[#2C4A3B] tracking-[0.1em] leading-tight">HOME NURSING</span>
-                        </div>
+    <!-- Navigation Bar -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 glass-nav" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.showMainPage()">
+                    <i class="ph-fill ph-hand-heart text-4xl text-brand-green"></i>
+                    <div>
+                        <h1 class="text-brand-blue font-bold text-xl tracking-wide">Golden Hand</h1>
+                        <p class="text-brand-green text-xs font-bold tracking-widest uppercase">Caregivers</p>
                     </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-6 items-center">
+                    <a href="javascript:void(0)" onclick="window.showMainPage()" class="text-slate-600 hover:text-brand-green transition text-sm font-semibold">Home</a>
+                    <a href="#services" onclick="window.showMainPage()" class="text-slate-600 hover:text-brand-green transition text-sm font-semibold">Services</a>
+                    <a href="#about" onclick="window.showMainPage()" class="text-slate-600 hover:text-brand-green transition text-sm font-semibold">About Us</a>
                     
-                    <!-- Nav Links -->
-                    <div class="hidden lg:flex items-center space-x-3 text-[11px] font-bold text-gray-700 uppercase tracking-widest">
-                        <a href="javascript:void(0)" onclick="window.goToSection('home')" class="hover:text-[#82B366] transition">HOME</a>
-                        <span class="text-gray-300">|</span>
-                        <a href="javascript:void(0)" onclick="window.goToSection('features')" class="hover:text-[#82B366] transition">ABOUT US</a>
-                        <span class="text-gray-300">|</span>
-                        <a href="javascript:void(0)" onclick="window.goToSection('services')" class="hover:text-[#82B366] transition">SERVICES</a>
-                        <span class="text-gray-300">|</span>
-                        <a href="javascript:void(0)" onclick="window.goToSection('top-caregivers')" class="hover:text-[#82B366] transition">REVIEWS</a>
-                        <span class="text-gray-300">|</span>
-                        <a href="javascript:void(0)" onclick="window.goToSection('contact')" class="hover:text-[#82B366] transition">CONTACT</a>
+                    <!-- Investor Portal Button -->
+                    <a href="javascript:void(0)" onclick="window.showInvestorPortal()" class="ml-4 flex items-center gap-1.5 text-brand-green border-2 border-brand-green px-4 py-2 hover:bg-brand-green hover:text-white transition rounded-full font-bold shadow-sm bg-green-50/50">
+                        <i class="ph-bold ph-trend-up text-lg"></i> INVESTORS
+                    </a>
 
-                        <!-- Auth Button Container -->
-                        <div id="nav-auth-container">
-                            <a href="javascript:void(0)" onclick="window.showPage('auth-page'); window.setAuthMode('login');" class="ml-4 flex items-center gap-1.5 text-[#2C4A3B] border border-[#2C4A3B] px-2.5 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
-                                <i class="fas fa-user"></i> LOGIN / REGISTER
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                    <a href="#book" onclick="window.showMainPage()" class="bg-brand-green text-white px-6 py-2.5 rounded-full font-bold hover:bg-brand-greenDark shadow-md shadow-green-200 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <i class="ph ph-calendar-plus text-lg"></i>
+                        Book / Join
+                    </a>
+                </nav>
 
-        <!-- Floating Chat Widget -->
-        <div id="floating-chat-container">
-            <div id="chat-window">
-                <div class="bg-[#10213b] text-white px-4 py-3 flex justify-between items-center shadow-md z-10">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-headset text-[#C19B54]"></i>
-                        <span class="font-bold text-sm">Live Support</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1.5 text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">
-                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
-                        </span>
-                        <button onclick="window.toggleChat()" class="text-white hover:text-gray-300"><i class="fas fa-times"></i></button>
-                    </div>
-                </div>
-                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-[#f8fafc] flex flex-col gap-3 chat-scroll">
-                    <!-- Default welcome message -->
-                    <div class="text-left">
-                        <span class="bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm">
-                            Hello! How can we help you today? 👋<br>
-                            <span class="text-[9px] text-gray-400 mt-1 block">Golden Hand Support</span>
-                        </span>
-                    </div>
-                </div>
-                <form class="p-3 bg-white border-t flex items-center gap-2" onsubmit="window.sendChatMessage(event)">
-                    <input type="text" id="chat-input" placeholder="Type a message..." required class="flex-1 bg-gray-100 border-none rounded-full px-4 py-2 text-sm focus:ring-1 focus:ring-[#C19B54] outline-none">
-                    <button type="submit" class="bg-[#10213b] text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#C19B54] transition shadow-md">
-                        <i class="fas fa-paper-plane text-xs"></i>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="mobile-menu-btn" class="text-brand-blue hover:text-brand-green focus:outline-none">
+                        <i class="ph ph-list text-3xl"></i>
                     </button>
-                </form>
-            </div>
-            <div id="chat-toggle-btn" onclick="window.toggleChat()">
-                <i class="fas fa-comments text-[26px]"></i>
+                </div>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- MAIN LANDING PAGE                          -->
-        <!-- ========================================== -->
-        <div id="main-landing-page" class="fade-in">
-            <!-- Hero Section -->
-            <section id="home" class="pt-16 pb-0 relative border-b border-gray-100 h-[520px]">
-                <div class="absolute inset-0 bg-grid right-0 left-1/3 -z-10"></div>
-                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center relative z-10 h-full">
-                    <div class="md:w-[50%] z-20 pb-10">
-                        <h1 class="text-[34px] lg:text-[42px] font-extrabold mb-5 leading-[1.1] text-[#2C4A3B] uppercase tracking-wide">
-                            ELEVATING HOME CARE <br> WITH COMPASSION <br> & DIGNITY
-                        </h1>
-                        <p class="text-[13px] mb-6 text-gray-800 font-bold leading-relaxed max-w-[400px]">
-                            We understand the unique needs of our seniors, and we're here to provide personalized care that promotes independence, dignity, and a fulfilling quality of life.
-                        </p>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-xl absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="javascript:void(0)" onclick="window.showMainPage()" class="block px-3 py-3 text-brand-blue font-semibold border-b border-slate-50">Home</a>
+                <a href="#services" onclick="window.showMainPage()" class="block px-3 py-3 text-brand-blue font-semibold border-b border-slate-50">Services</a>
+                <a href="javascript:void(0)" onclick="window.showInvestorPortal()" class="block px-3 py-3 text-brand-green font-bold border-b border-slate-50 flex items-center gap-2">
+                    <i class="ph-bold ph-trend-up text-lg"></i> Investor Portal
+                </a>
+                <a href="#book" onclick="window.showMainPage()" class="block mt-4 text-center bg-brand-green text-white px-6 py-3 rounded-xl font-bold">Book a Service / Register</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- MAIN LANDING PAGE VIEW                     -->
+    <!-- ========================================== -->
+    <div id="main-page-view" class="block">
+        
+        <!-- Hero Section -->
+        <section id="home" class="relative min-h-screen flex items-center pt-20 bg-slate-50 overflow-hidden">
+            <div class="absolute inset-0 z-0 flex justify-end">
+                <div class="w-full lg:w-3/5 h-full relative">
+                    <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Caregiver with elderly" class="w-full h-full object-cover lg:rounded-l-[4rem] shadow-2xl" />
+                    <div class="absolute inset-0 bg-white/80 lg:hidden"></div>
+                </div>
+            </div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl max-w-lg border border-slate-100">
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold text-brand-blue leading-tight mb-4">
+                        Compassionate Care for Your Loved Ones
+                    </h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed text-sm md:text-base">
+                        Golden Hand Caregivers provides professional, trusted caregiving services with warmth and expertise. We're here to support your family's health and wellbeing.
+                    </p>
+                    
+                    <div class="flex flex-col gap-3 mb-8">
+                        <a href="#book" class="text-center bg-brand-green text-white px-6 py-3.5 rounded-xl font-bold hover:bg-brand-greenDark transition shadow-md shadow-green-200">
+                            Book a Caregiver
+                        </a>
+                        <a href="#about" class="text-center bg-white border border-brand-green text-brand-green px-6 py-3.5 rounded-xl font-bold hover:bg-brand-greenLight transition">
+                            Learn More
+                        </a>
+                    </div>
+
+                    <div class="flex gap-8 border-t border-slate-100 pt-6">
                         <div>
-                            <button onclick="window.goToSection('services')" class="bg-[#3A5A40] text-white font-bold px-5 py-3 hover:bg-[#2C4A3B] transition uppercase text-xs tracking-wider rounded-sm inline-block">
-                                [EXPLORE OUR CARE PLANS]
+                            <h4 class="text-2xl font-bold text-brand-green">500+</h4>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Families Served</p>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-brand-green">98%</h4>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Satisfaction Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-brand-green font-bold tracking-wide uppercase text-sm mb-2">Our Services</h2>
+                    <h3 class="font-serif text-3xl md:text-4xl font-bold text-brand-blue mb-4">Care Tailored to Your Needs</h3>
+                    <p class="text-slate-600">Professional medical and non-medical support designed to meet the specific requirements of your loved ones.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <article class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-all duration-300 service-card border border-slate-100 group">
+                        <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-6 text-brand-green service-icon transition-transform duration-300 shadow-sm">
+                            <i class="ph-fill ph-wheelchair text-3xl"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-bold text-brand-blue mb-3">Elderly Care</h4>
+                        <p class="text-slate-600 mb-6 text-sm leading-relaxed">
+                            Providing the love, medication assistance, companionship, and daily support your elderly parents need to live comfortably at home.
+                        </p>
+                        <ul class="space-y-2 mb-6 text-sm text-slate-500">
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Daily living assistance</li>
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Medication reminders</li>
+                        </ul>
+                    </article>
+
+                    <!-- Service 2 -->
+                    <article class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-all duration-300 service-card border border-slate-100 group">
+                        <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-6 text-brand-green service-icon transition-transform duration-300 shadow-sm">
+                            <i class="ph-fill ph-first-aid text-3xl"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-bold text-brand-blue mb-3">Patient/Nursing Care</h4>
+                        <p class="text-slate-600 mb-6 text-sm leading-relaxed">
+                            Professional medical support including wound care, medication management, and health monitoring for recovering patients.
+                        </p>
+                        <ul class="space-y-2 mb-6 text-sm text-slate-500">
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Vital signs monitoring</li>
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Wound care & dressing</li>
+                        </ul>
+                    </article>
+
+                    <!-- Service 3 -->
+                    <article class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-all duration-300 service-card border border-slate-100 group">
+                        <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-6 text-brand-green service-icon transition-transform duration-300 shadow-sm">
+                            <i class="ph-fill ph-baby text-3xl"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-bold text-brand-blue mb-3">Baby Care</h4>
+                        <p class="text-slate-600 mb-6 text-sm leading-relaxed">
+                            Professional childcare services including feeding, bathing, and developmental support for infants and toddlers.
+                        </p>
+                        <ul class="space-y-2 mb-6 text-sm text-slate-500">
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Infant care & feeding</li>
+                            <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-green"></i> Developmental activities</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking & Registration Form Section -->
+        <section id="book" class="py-20 bg-brand-blue relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-green opacity-10 blur-3xl"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-10">
+                    <h3 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4">Connect With Us</h3>
+                    <p class="text-blue-100">Whether you need a caregiver or want to join our professional team, select the right option below.</p>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-6 md:p-10 shadow-2xl">
+                    
+                    <!-- Tabs -->
+                    <div class="flex p-1 bg-slate-100 rounded-xl mb-8">
+                        <button id="btn-client" onclick="window.switchMainTab('client')" class="flex-1 py-3 text-sm md:text-base rounded-lg tab-active transition-all">
+                            Book a Caregiver
+                        </button>
+                        <button id="btn-staff" onclick="window.switchMainTab('staff')" class="flex-1 py-3 text-sm md:text-base rounded-lg tab-inactive transition-all">
+                            Join as Nurse/Caregiver
+                        </button>
+                    </div>
+
+                    <!-- Client Booking Form -->
+                    <form id="clientForm" onsubmit="window.submitClientBooking(event)" class="space-y-6 block">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Client Name *</label>
+                                <input type="text" id="clientName" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-green outline-none bg-slate-50 focus:bg-white transition" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number *</label>
+                                <input type="tel" id="clientPhone" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-green outline-none bg-slate-50 focus:bg-white transition" placeholder="07X XXX XXXX">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Service Required *</label>
+                            <select id="clientService" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-green outline-none bg-slate-50 focus:bg-white transition appearance-none">
+                                <option value="" disabled selected>Select a service...</option>
+                                <option value="Elderly Care">Elderly Care</option>
+                                <option value="Patient Care">Patient / Nursing Care</option>
+                                <option value="Baby Care">Baby Care / Nanny</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Location / Address</label>
+                            <input type="text" id="clientAddress" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-green outline-none bg-slate-50 focus:bg-white transition" placeholder="Colombo 06">
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-green text-white font-bold py-4 rounded-xl hover:bg-brand-greenDark transition shadow-lg shadow-green-200 flex justify-center items-center gap-2">
+                            Request Booking
+                        </button>
+                    </form>
+
+                    <!-- Staff/Caregiver Registration Form -->
+                    <form id="staffForm" onsubmit="window.submitStaffApplication(event)" class="space-y-6 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Applicant Name *</label>
+                                <input type="text" id="staffName" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-blue outline-none bg-slate-50 focus:bg-white transition" placeholder="Jane Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Phone Number *</label>
+                                <input type="tel" id="staffPhone" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-blue outline-none bg-slate-50 focus:bg-white transition" placeholder="07X XXX XXXX">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Applying For *</label>
+                                <select id="staffPosition" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-blue outline-none bg-slate-50 focus:bg-white transition appearance-none">
+                                    <option value="" disabled selected>Select position...</option>
+                                    <option value="Registered Nurse">Registered Nurse (RN)</option>
+                                    <option value="Caregiver">Caregiver</option>
+                                    <option value="Babysitter">Babysitter / Nanny</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Years of Experience *</label>
+                                <input type="number" id="staffExp" min="0" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-blue outline-none bg-slate-50 focus:bg-white transition" placeholder="e.g. 2">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Qualifications / Message</label>
+                            <textarea id="staffMessage" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-blue outline-none bg-slate-50 focus:bg-white transition" placeholder="Mention your NVQ level, past experience..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-blue text-white font-bold py-4 rounded-xl hover:bg-brand-blueDark transition shadow-lg flex justify-center items-center gap-2">
+                            Submit Application
+                        </button>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div id="mainSuccessMessage" class="hidden mt-6 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-xl flex items-center gap-3">
+                        <i class="ph-fill ph-check-circle text-2xl text-green-500"></i>
+                        <p class="font-medium" id="mainSuccessText">Success! We have received your details.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-brand-blueDark text-slate-300 py-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+                <i class="ph-fill ph-hand-heart text-3xl text-brand-green mb-2"></i>
+                <h2 class="text-white font-bold text-xl mb-4">Golden Hand Caregivers</h2>
+                <p class="text-sm text-slate-400 mb-6 max-w-md">Sri Lanka's leading home care service providing professional care for the elderly and patients right at their home.</p>
+                <p class="text-xs text-slate-500">&copy; 2026 Golden Hand Caregivers. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- INVESTOR PORTAL VIEW                       -->
+    <!-- ========================================== -->
+    <div id="investor-page-view" class="hidden min-h-screen investor-bg pt-20 flex-col">
+        <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow flex flex-col">
+            
+            <!-- INVESTOR AUTH SECTION -->
+            <div id="investor-auth-section" class="flex-grow flex items-center justify-center">
+                <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-gray-100">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ph-fill ph-trend-up text-3xl text-brand-green"></i>
+                        </div>
+                        <h2 class="font-serif text-3xl font-bold text-brand-blue mb-2">Investor Portal</h2>
+                        <p class="text-gray-500 text-sm">Secure access for Golden Hand investors.</p>
+                    </div>
+
+                    <!-- Toggle Login/Signup -->
+                    <div class="flex border-b border-gray-200 mb-6">
+                        <button id="inv-tab-login" onclick="window.setInvestorAuthMode('login')" class="flex-1 py-3 font-bold text-brand-green border-b-2 border-brand-green transition">Sign In</button>
+                        <button id="inv-tab-register" onclick="window.setInvestorAuthMode('register')" class="flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition">Apply</button>
+                    </div>
+
+                    <!-- Investor Login -->
+                    <form id="investor-login-form" onsubmit="window.handleInvestorLogin(event)" class="space-y-5 block">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="inv-login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                            <input type="password" id="inv-login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <button type="submit" id="btn-inv-login" class="w-full bg-brand-blue text-white font-bold py-3.5 rounded-xl hover:bg-blue-900 transition shadow-lg flex justify-center items-center gap-2 mt-4">
+                            Secure Sign In <i class="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <!-- Investor Register -->
+                    <form id="investor-register-form" onsubmit="window.handleInvestorRegister(event)" class="space-y-5 hidden">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="inv-reg-name" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="inv-reg-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                            <input type="password" id="inv-reg-password" required minlength="6" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white">
+                        </div>
+                        <button type="submit" id="btn-inv-register" class="w-full bg-brand-green text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition shadow-lg flex justify-center items-center gap-2 mt-4">
+                            Apply as Investor
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- INVESTOR DASHBOARD SECTION -->
+            <div id="investor-dashboard-section" class="hidden flex-col gap-8 w-full">
+                
+                <!-- Welcome & Top Stats -->
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-4">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-brand-blue">Welcome back, <span id="investor-name-display">Investor</span></h2>
+                        <p class="text-gray-500">Here is the overview of your portfolio with Golden Hand Caregivers.</p>
+                    </div>
+                    
+                    <div class="flex gap-4 w-full lg:w-auto">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex-1 lg:min-w-[200px]">
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Total Invested</p>
+                            <h3 class="text-2xl font-bold text-brand-blue" id="statTotalInvested">Rs. 0</h3>
+                        </div>
+                        <div class="bg-green-50 p-5 rounded-2xl shadow-sm border border-green-100 flex-1 lg:min-w-[200px]">
+                            <p class="text-sm font-semibold text-green-700 mb-1 flex justify-between items-center">
+                                Expected Return <span class="bg-brand-green text-white text-[10px] px-2 py-0.5 rounded-full">40% APY</span>
+                            </p>
+                            <h3 class="text-2xl font-bold text-brand-green" id="statAnnualReturn">Rs. 0</h3>
+                        </div>
+                        <!-- Logout Button for Investor -->
+                        <div class="flex items-center ml-4">
+                            <button onclick="window.handleInvestorLogout()" class="bg-red-50 text-red-600 hover:bg-red-100 font-bold px-4 py-2 rounded-xl transition text-sm flex items-center gap-2">
+                                <i class="ph-bold ph-sign-out"></i> Logout
                             </button>
                         </div>
                     </div>
-                    <!-- Hero Image -->
-                    <div class="md:w-[50%] h-full relative flex justify-center items-end">
-                        <div class="absolute w-[65%] h-[80%] border-[4px] border-[#C19B54] top-4 left-[20%] -z-10 bg-transparent"></div>
-                        <img src="IMG_5925.JPG.jpeg" alt="Professional Caregiver" class="h-[105%] object-cover object-top relative z-10 image-fade-bottom scale-105 origin-bottom drop-shadow-xl">
-                    </div>
-                </div>
-            </section>
-
-            <!-- Services Section -->
-            <section id="services" class="py-12 bg-white relative z-20">
-                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                    <h2 class="text-lg font-extrabold mb-6 text-[#2C4A3B] uppercase tracking-widest">OUR CORE SERVICES</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
-                            <div class="text-[#10213b] text-[38px] mb-3 relative"><i class="fas fa-users"></i></div>
-                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Companion and Social<br>Engagement</h3>
-                            <p class="text-gray-600 text-[11px] leading-relaxed">Active engagement, social activities, and genuine companionship.</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
-                            <div class="text-[#10213b] text-[38px] mb-3"><i class="fas fa-hands-holding-heart"></i></div>
-                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Meal Planning and<br>Preparation</h3>
-                            <p class="text-gray-600 text-[11px] leading-relaxed">Nutritious meal plans and personalized food preparation.</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
-                            <div class="text-[#10213b] text-[38px] mb-3"><i class="fas fa-hands-wash"></i></div>
-                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Personal Care &<br>Hygiene</h3>
-                            <p class="text-gray-600 text-[11px] leading-relaxed">Assistance with bathing, dressing, and daily personal hygiene.</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col items-center text-center">
-                            <div class="text-[#10213b] text-[38px] mb-3 relative"><i class="fas fa-notes-medical"></i></div>
-                            <h3 class="text-[13px] font-bold mb-2 text-gray-900 leading-tight">Skilled Nursing &<br>Medication Support</h3>
-                            <p class="text-gray-600 text-[11px] leading-relaxed">Licensed nursing care, wound management, and medication administration.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Features Section -->
-            <section id="features" class="py-12 relative">
-                <div class="absolute inset-0 bg-grid right-0 left-1/2 -z-10"></div>
-                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
-                    <div class="text-center mb-10">
-                        <h2 class="text-lg font-extrabold text-[#3A5A40] uppercase tracking-widest">WHY GOLDEN HAND?</h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 justify-items-center">
-                        <div class="flex flex-col items-center text-center">
-                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
-                                <img src="https://img.freepik.com/free-photo/nurse-holding-senior-woman-s-hands_23-2148239023.jpg" class="w-full h-full object-cover">
-                            </div>
-                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Compassionate<br>Companionship.</h4>
-                        </div>
-                        <div class="flex flex-col items-center text-center mt-6 md:mt-0">
-                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
-                                <img src="https://img.freepik.com/free-photo/close-up-doctor-holding-elderly-patient-hands_23-2148962328.jpg" class="w-full h-full object-cover">
-                            </div>
-                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Experienced,<br>Qualified Team.</h4>
-                        </div>
-                        <div class="flex flex-col items-center text-center mt-12 md:mt-0">
-                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
-                                <img src="https://img.freepik.com/free-photo/smiling-young-female-doctor-wearing-medical-robe-with-stethoscope-holding-digital-tablet-isolated-white-background_141793-131102.jpg" class="w-full h-full object-cover scale-110 object-top">
-                            </div>
-                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Experienced,<br>Qualified Team.</h4>
-                        </div>
-                        <div class="flex flex-col items-center text-center mt-6 md:mt-0">
-                            <div class="w-[140px] h-[140px] rounded-full overflow-hidden border-[5px] border-[#C19B54] mb-3 shadow-md bg-white">
-                                <img src="https://img.freepik.com/free-photo/portrait-successful-mid-adult-doctor-with-tablet-computer_1262-12882.jpg" class="w-full h-full object-cover object-top">
-                            </div>
-                            <h4 class="font-bold text-gray-900 text-[12px] leading-tight">Technology-Enabled<br>Care.</h4>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- NEW: Top Rated Caregivers Section -->
-            <section id="top-caregivers" class="py-16 bg-[#F8FAFC] relative border-t border-gray-100">
-                <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                    <div class="text-center mb-12">
-                        <h2 class="text-2xl font-extrabold text-[#10213b] uppercase tracking-widest">TOP RATED CAREGIVERS</h2>
-                        <p class="text-sm text-gray-500 mt-2">විශිෂ්ටතම සේවාවක් සැපයූ අපගේ සාත්තු සේවකයින්</p>
-                    </div>
-                    
-                    <div id="top-caregivers-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                        <!-- Caregivers will be loaded here dynamically via JS -->
-                        <div class="col-span-3 text-center py-10">
-                            <i class="fas fa-spinner fa-spin text-3xl text-[#C19B54]"></i>
-                            <p class="text-sm text-gray-500 mt-3">Loading top caregivers...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Footer Section -->
-            <footer id="contact" class="bg-[#10213b] text-white pt-10 pb-6 px-4 sm:px-6 lg:px-8 mt-8 border-t-[12px] border-[#2C4A3B]">
-                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <h3 class="text-xl font-bold mb-1 tracking-wide">GET IN TOUCH</h3>
-                        <p class="text-gray-300 text-[12px] mb-6">Experience the Golden Hand Difference.</p>
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="text-[#C19B54] text-[32px]"><i class="fas fa-phone-square-alt"></i></div>
-                            <div><p class="text-[11px] text-gray-300">Call Us:</p><p class="font-bold text-sm tracking-widest">070 755 68 86</p></div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col pt-2 md:pl-4">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="text-[#C19B54] text-[32px] mt-1"><i class="fas fa-map-marker-alt"></i></div>
-                            <div><p class="text-[11px] text-gray-300">Location:</p><p class="text-[12px] font-bold leading-snug">No 200/108 Kandy,<br>Sri Lanka</p></div>
-                        </div>
-                        <div class="mt-2">
-                            <p class="text-[13px] font-bold mb-2">Connect with Us</p>
-                            <div class="flex gap-2">
-                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-whatsapp"></i></a>
-                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="w-7 h-7 rounded-full bg-[#C19B54] text-[#10213b] flex items-center justify-center hover:bg-white transition text-sm"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col pt-2">
-                         <h3 class="text-lg font-bold mb-3 tracking-wide">LOCATION INFO</h3>
-                         <p class="text-[11px] text-gray-300 leading-relaxed">Providing high quality home nursing and elderly care services in Kandy and surrounding areas with professional staff.</p>
-                    </div>
-                </div>
-                <div class="max-w-7xl mx-auto mt-8 pt-4 border-t border-[#1c355c]">
-                    <p class="text-[10px] text-gray-400">Copyright © 2022 Goldener Caregivers. Ltd.</p>
-                </div>
-            </footer>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- AUTHENTICATION PAGE                        -->
-        <!-- ========================================== -->
-        <div id="auth-page" class="hidden pt-12 pb-20 bg-grid min-h-[80vh] fade-in">
-            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-100 mt-10 relative">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-extrabold text-[#2C4A3B] uppercase tracking-wide">GOLDEN HAND</h2>
-                    <p class="text-[#82B366] font-bold mt-1">CAREGIVERS</p>
                 </div>
 
-                <div class="flex border-b border-gray-200 mb-6">
-                    <button id="tab-login" onclick="window.setAuthMode('login')" class="flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition">Sign In</button>
-                    <button id="tab-register" onclick="window.setAuthMode('register')" class="flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition">Sign Up</button>
-                </div>
+                <!-- VISION 2030 ROADMAP -->
+                <div class="roadmap-container p-8 lg:p-12 shadow-2xl relative">
+                    <div class="glow-bg"></div>
+                    <div class="relative z-10">
+                        <div class="text-center mb-10">
+                            <h3 class="text-brand-green font-bold tracking-widest uppercase text-sm mb-2">Investment Opportunities</h3>
+                            <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4">VISION 2030: A Legacy of Complete Care</h2>
+                            <p class="text-gray-300 max-w-2xl mx-auto text-sm">Click on any future project node to view details and invest. All confirmed projects yield a 40% annual return on your investment.</p>
+                        </div>
 
-                <form id="login-form" onsubmit="window.handleLogin(event)" class="space-y-5">
-                    <p class="text-center text-gray-500 mb-4">Welcome Back!</p>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <div class="relative">
-                            <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
-                            <input type="email" id="login-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <div class="relative">
-                            <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
-                            <input type="password" id="login-password" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <button type="submit" id="btn-login" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md">Sign In</button>
-                    
-                    <div class="text-center text-gray-400 my-4">OR</div>
-                    <button type="button" id="btn-google" onclick="window.handleGoogleLogin()" class="w-full bg-white border-2 border-[#2C4A3B] text-[#2C4A3B] font-bold py-3 rounded hover:bg-gray-50 transition shadow-sm flex justify-center items-center gap-2">
-                        <i class="fab fa-google text-red-500"></i> Sign in with Google
-                    </button>
-                </form>
-
-                <form id="register-form" onsubmit="window.handleRegister(event)" class="space-y-5 hidden">
-                    <p class="text-center text-gray-500 mb-4">Join Golden Hand Caregivers today</p>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <div class="relative">
-                            <i class="fas fa-person absolute left-3 top-3 text-[#2C4A3B]"></i>
-                            <input type="text" id="reg-name" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <div class="relative">
-                            <i class="fas fa-envelope absolute left-3 top-3 text-[#2C4A3B]"></i>
-                            <input type="email" id="reg-email" required class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <div class="relative">
-                            <i class="fas fa-lock absolute left-3 top-3 text-[#2C4A3B]"></i>
-                            <input type="password" id="reg-password" required minlength="6" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#C19B54]">
-                        </div>
-                    </div>
-                    <div class="pt-2">
-                        <p class="text-sm font-bold text-[#2C4A3B] mb-2">Select Your Role:</p>
-                        <div class="flex items-center gap-4">
-                            <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
-                                <input type="radio" name="role" id="role-client" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366]"> Client (සේවාදායක)
-                            </label>
-                            <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
-                                <input type="radio" name="role" id="role-caregiver" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366]"> Caregiver (සාත්තු සේවක)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <input type="checkbox" id="reg-terms" required class="text-[#82B366] focus:ring-[#82B366] rounded border-gray-300 cursor-pointer">
-                        <label for="reg-terms" class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-[#C19B54] font-bold">Terms and Conditions</a></label>
-                    </div>
-                    <button type="submit" id="btn-register" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded hover:bg-[#a88648] transition shadow-md">Create Account</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- NEW: Google Role Selection Modal (For New Users Only) -->
-        <div id="google-role-modal" class="hidden fixed inset-0 bg-black/60 z-[1000] flex items-center justify-center fade-in backdrop-blur-sm px-4">
-            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-[#F8FAFC] rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#C19B54] shadow-sm">
-                        <i class="fab fa-google text-2xl text-[#C19B54]"></i>
-                    </div>
-                    <h3 class="text-xl font-extrabold text-[#2C4A3B]">Welcome!</h3>
-                    <p class="text-sm text-gray-500 mt-2">Please select your account type to continue.</p>
-                </div>
-                <form onsubmit="window.submitGoogleRole(event)">
-                    <div class="space-y-3 mb-6">
-                        <label class="flex items-center p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#82B366] hover:bg-green-50 transition">
-                            <input type="radio" name="google-role" value="CLIENT" checked class="text-[#82B366] focus:ring-[#82B366] w-4 h-4 ml-2">
-                            <div class="ml-4">
-                                <span class="block text-sm font-bold text-gray-800">Client (සේවාදායක)</span>
-                                <span class="block text-xs text-gray-500">I need care services</span>
+                        <!-- Roadmap Grid Layout -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            
+                            <!-- EST Current / Base -->
+                            <div class="col-span-1 lg:col-span-4 flex justify-center mb-6">
+                                <div class="glass-card p-4 rounded-2xl flex items-center gap-4 border-l-4 border-l-brand-green max-w-md w-full">
+                                    <div class="bg-brand-blue/10 p-3 rounded-xl">
+                                        <i class="ph-fill ph-house-line text-2xl text-brand-blue"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-brand-green uppercase tracking-wide">Current Setup (2024)</p>
+                                        <h4 class="font-bold text-brand-blue">Home Nursing Service</h4>
+                                    </div>
+                                </div>
                             </div>
-                        </label>
-                        <label class="flex items-center p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#82B366] hover:bg-green-50 transition">
-                            <input type="radio" name="google-role" value="CAREGIVER" class="text-[#82B366] focus:ring-[#82B366] w-4 h-4 ml-2">
-                            <div class="ml-4">
-                                <span class="block text-sm font-bold text-gray-800">Caregiver (සාත්තු සේවක)</span>
-                                <span class="block text-xs text-gray-500">I want to provide care</span>
-                            </div>
-                        </label>
-                    </div>
-                    <button type="submit" id="btn-google-role" class="w-full bg-[#C19B54] text-white font-bold py-3 rounded-lg hover:bg-[#a88648] transition shadow-md text-sm">
-                        Continue to Dashboard
-                    </button>
-                </form>
-            </div>
-        </div>
 
-        <!-- ========================================== -->
-        <!-- CLIENT KYC PAGE                            -->
-        <!-- ========================================== -->
-        <div id="kyc-client-page" class="hidden pt-12 pb-20 bg-gray-50 min-h-screen fade-in">
-            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100 mt-10">
-                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-6 border-b pb-4">සේවාදායක තහවුරු කිරීම (Client KYC)</h2>
-                <form id="form-client-kyc" onsubmit="window.submitClientKyc(event)" class="space-y-6">
-                    <div class="bg-blue-50 p-4 rounded text-blue-800 text-sm font-medium mb-6 border border-blue-100">
-                        <i class="fas fa-info-circle mr-2"></i> Identity Verification / අනන්‍යතා තහවුරු කිරීම
-                    </div>
+                            <div class="col-span-1 lg:col-span-4 flex justify-center -my-2 opacity-50 text-white">
+                                <i class="ph-bold ph-arrow-down text-2xl animate-bounce"></i>
+                            </div>
 
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NIC / Passport Number</label>
-                            <input type="text" id="client-nic" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth (උපන් දිනය)</label>
-                            <input type="date" id="client-dob" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload NIC / Passport Photos</label>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div onclick="document.getElementById('client-nic-front').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                                <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
-                                <p id="txt-client-nic-front" class="text-sm text-gray-600">Front Photo</p>
-                                <input type="file" id="client-nic-front" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-nic-front').innerText='Selected'">
-                            </div>
-                            <div onclick="document.getElementById('client-nic-back').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                                <i class="fas fa-id-card text-3xl text-gray-400 mb-2"></i>
-                                <p id="txt-client-nic-back" class="text-sm text-gray-600">Back Photo</p>
-                                <input type="file" id="client-nic-back" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-nic-back').innerText='Selected'">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div onclick="document.getElementById('client-selfie').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100">
-                            <i class="fas fa-camera text-3xl text-gray-400 mb-2"></i>
-                            <p id="txt-client-selfie" class="text-sm text-gray-600">Take a Selfie</p>
-                            <input type="file" id="client-selfie" accept="image/*" class="hidden" onchange="document.getElementById('txt-client-selfie').innerText='Selected'">
-                        </div>
-                    </div>
-
-                    <div class="border-t pt-6 mt-6">
-                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">Address & Billing Details</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Home Address (නිවසේ ලිපිනය)</label>
-                                <textarea id="client-address" required rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Service Address (If different)</label>
-                                <textarea id="client-service-address" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]"></textarea>
-                            </div>
-                            <div class="grid md:grid-cols-2 gap-4">
+                            <!-- Projects -->
+                            <div class="project-card glass-card rounded-[1.5rem] p-5 flex flex-col justify-between" onclick="window.openInvestModal('Caregiver Institute')">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Billing Name</label>
-                                    <input type="text" id="client-billing-name" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
+                                    <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-full h-32 object-cover rounded-xl mb-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-brand-blue text-lg leading-tight">Caregiver Institute</h4>
+                                        <span class="bg-blue-100 text-brand-blue text-xs font-bold px-2 py-1 rounded-md">Phase 1</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Establishing a state-of-the-art training facility for NVQ level caregivers.</p>
                                 </div>
+                                <button class="w-full bg-brand-blue text-white text-sm font-bold py-2.5 rounded-xl hover:bg-brand-green transition">Invest Now</button>
+                            </div>
+
+                            <div class="project-card glass-card rounded-[1.5rem] p-5 flex flex-col justify-between" onclick="window.openInvestModal('Luxury Elder Home')">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Billing Address</label>
-                                    <input type="text" id="client-billing-address" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#C19B54]">
+                                    <img src="https://images.unsplash.com/photo-1529290130-4ca3753253ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-full h-32 object-cover rounded-xl mb-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-brand-blue text-lg leading-tight">Luxury Elder Home</h4>
+                                        <span class="bg-blue-100 text-brand-blue text-xs font-bold px-2 py-1 rounded-md">Phase 2</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Premium residential care facility with 24/7 medical supervision and nature views.</p>
                                 </div>
+                                <button class="w-full bg-brand-blue text-white text-sm font-bold py-2.5 rounded-xl hover:bg-brand-green transition">Invest Now</button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <input type="checkbox" required class="w-4 h-4 text-[#82B366] border-gray-300 rounded">
-                        <label class="ml-2 text-sm font-bold text-gray-700">I Agree (මම එකඟ වෙමි)</label>
-                    </div>
-                    <button type="submit" id="btn-submit-client" class="w-full bg-[#82B366] text-white font-bold py-3 rounded hover:bg-[#6c9754] transition shadow-md mt-6">අවසන් කරන්න (Submit)</button>
-                </form>
-            </div>
-        </div>
 
-        <!-- ========================================== -->
-        <!-- CAREGIVER KYC PAGE                         -->
-        <!-- ========================================== -->
-        <div id="kyc-caregiver-page" class="hidden pt-12 pb-20 bg-gray-50 min-h-screen fade-in">
-            <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-100 mt-10">
-                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2 border-b pb-4">ගිණුම් සත්‍යාපනය (Caregiver KYC)</h2>
-                <p class="text-gray-500 text-sm mb-6">Please complete all 4 steps carefully. / පියවර 4 ම නිවැරදිව පුරවන්න.</p>
-                <form id="form-caregiver-kyc" onsubmit="window.submitCaregiverKyc(event)" class="space-y-8">
-                    <!-- Step 1 -->
-                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 1: පුද්ගලික තොරතුරු</h3>
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">NIC Number</label><input type="text" id="cg-nic" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Gender</label><select id="cg-gender" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"><option>Female</option><option>Male</option></select></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label><input type="date" id="cg-dob" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                        </div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label><textarea id="cg-address" required rows="2" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></textarea></div>
-                        <div class="mt-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Upload NIC (Front & Back) & Selfie</label>
-                            <div class="flex gap-4 overflow-x-auto pb-2">
-                                <div onclick="document.getElementById('cg-nic-front').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                    <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p id="txt-cg-nic-front" class="text-xs">NIC Front</p>
-                                    <input type="file" id="cg-nic-front" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-nic-front').innerText='Selected'">
+                            <div class="project-card glass-card rounded-[1.5rem] p-5 flex flex-col justify-between" onclick="window.openInvestModal('Ambulance Fleet')">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1516841273335-e39b37888115?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-full h-32 object-cover rounded-xl mb-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-brand-blue text-lg leading-tight">Ambulance Fleet</h4>
+                                        <span class="bg-blue-100 text-brand-blue text-xs font-bold px-2 py-1 rounded-md">Phase 3</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Expanding our rapid response medical transport fleet for emergency care.</p>
                                 </div>
-                                <div onclick="document.getElementById('cg-nic-back').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                    <i class="fas fa-id-card text-2xl text-gray-400 mb-1"></i><p id="txt-cg-nic-back" class="text-xs">NIC Back</p>
-                                    <input type="file" id="cg-nic-back" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-nic-back').innerText='Selected'">
-                                </div>
-                                <div onclick="document.getElementById('cg-selfie').click()" class="min-w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                    <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i><p id="txt-cg-selfie" class="text-xs">Selfie</p>
-                                    <input type="file" id="cg-selfie" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-selfie').innerText='Selected'">
-                                </div>
+                                <button class="w-full bg-brand-blue text-white text-sm font-bold py-2.5 rounded-xl hover:bg-brand-green transition">Invest Now</button>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Step 2 -->
-                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 2: වෘත්තීය සහ සෞඛ්‍ය</h3>
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Experience Years</label><input type="number" id="cg-exp" required class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Special Skills</label><input type="text" id="cg-skills" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Chronic Illnesses</label><input type="text" id="cg-illness" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Status</label><input type="text" id="cg-vaccine" class="w-full px-3 py-2 border rounded focus:border-[#C19B54] outline-none"></div>
-                        </div>
-                        <div class="mt-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Upload Reports</label>
-                            <div class="flex gap-4">
-                                <div onclick="document.getElementById('cg-police').click()" class="flex-1 border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                    <i class="fas fa-file-alt text-2xl text-gray-400 mb-1"></i><p id="txt-cg-police" class="text-xs">Police Report</p>
-                                    <input type="file" id="cg-police" class="hidden" accept="image/*,.pdf" onchange="document.getElementById('txt-cg-police').innerText='Selected'">
-                                </div>
-                                <div onclick="document.getElementById('cg-cert').click()" class="flex-1 border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                    <i class="fas fa-certificate text-2xl text-gray-400 mb-1"></i><p id="txt-cg-cert" class="text-xs">Certificate</p>
-                                    <input type="file" id="cg-cert" class="hidden" accept="image/*,.pdf" onchange="document.getElementById('txt-cg-cert').innerText='Selected'">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="bg-gray-50 p-6 rounded border border-gray-200">
-                        <h3 class="text-lg font-bold text-[#2C4A3B] mb-4">පියවර 3: බැංකු සහ සේවා</h3>
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label><input type="text" id="cg-bank-name" required class="w-full px-3 py-2 border rounded outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label><input type="text" id="cg-bank-acc" required class="w-full px-3 py-2 border rounded outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Branch</label><input type="text" id="cg-bank-branch" required class="w-full px-3 py-2 border rounded outline-none"></div>
-                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Expected Salary (Rs./hr)</label><input type="number" id="cg-salary" required class="w-full px-3 py-2 border rounded outline-none"></div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Service Type</label>
-                            <div class="flex items-center gap-6">
-                                <label class="flex items-center cursor-pointer"><input type="checkbox" id="cg-livein" class="mr-2"> Live-in</label>
-                                <label class="flex items-center cursor-pointer"><input type="checkbox" id="cg-liveout" class="mr-2"> Live-out</label>
-                            </div>
-                        </div>
-                        <div>
-                            <div onclick="document.getElementById('cg-bankbook').click()" class="w-[150px] border-2 border-dashed bg-white rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
-                                <i class="fas fa-book text-2xl text-gray-400 mb-1"></i><p id="txt-cg-bankbook" class="text-xs">Bank Book</p>
-                                <input type="file" id="cg-bankbook" class="hidden" accept="image/*" onchange="document.getElementById('txt-cg-bankbook').innerText='Selected'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center mt-4 justify-center">
-                        <input type="checkbox" required class="w-4 h-4 text-[#82B366] rounded cursor-pointer">
-                        <label class="ml-2 text-sm font-bold text-gray-700">මම ඉහත කොන්දේසි වලට එකඟ වෙමි.</label>
-                    </div>
-                    <button type="submit" id="btn-submit-cg" class="w-full bg-[#82B366] text-white font-bold py-4 rounded hover:bg-[#6c9754] transition shadow-md text-lg">අවසන් කරන්න (Submit)</button>
-                </form>
-            </div>
-        </div>
 
-        <!-- ========================================== -->
-        <!-- PENDING APPROVAL PAGE                      -->
-        <!-- ========================================== -->
-        <div id="pending-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
-            <div class="max-w-md w-full bg-white px-8 py-12 rounded-xl shadow-lg border border-gray-50 text-center mt-10">
-                <div class="w-20 h-20 bg-[#fef08a] text-[#a16207] rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-clock text-4xl"></i>
-                </div>
-                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-4">Account Pending</h2>
-                <p class="text-gray-700 text-sm mb-1 leading-relaxed">ඔබගේ ගිණුම Admin අනුමැතිය සඳහා යොමු කර ඇත.</p>
-                <p class="text-gray-700 text-sm mb-2 leading-relaxed">කරුණාකර රැඳී සිටින්න.</p>
-                <p class="text-gray-600 text-sm mb-10">(Your account is pending Admin approval.)</p>
-                
-                <button onclick="window.handleLogout()" class="text-sm font-extrabold text-[#C19B54] underline hover:text-[#a88648] transition">Logout</button>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- APPROVED SUCCESS PAGE                      -->
-        <!-- ========================================== -->
-        <div id="approved-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
-            <div class="max-w-md w-full bg-white p-10 rounded-xl shadow-lg border border-green-100 text-center mt-10">
-                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-check-circle text-4xl"></i>
-                </div>
-                <h2 class="text-2xl font-extrabold text-[#2C4A3B] mb-2">Account Approved! 🎉</h2>
-                <p class="text-gray-600 mb-8">ඔබගේ ගිණුම සාර්ථකව අනුමත කර ඇත.<br>(Your account has been successfully approved.)</p>
-                <button onclick="window.completeApproval()" class="w-full bg-[#2C4A3B] text-white font-bold py-3 rounded hover:bg-[#1f352a] transition shadow-md mt-4">Continue to Home</button>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- REGISTRATION FEE PAGE (CLIENT ONLY)        -->
-        <!-- ========================================== -->
-        <div id="fee-page" class="hidden pt-20 pb-20 bg-gray-50 min-h-[80vh] fade-in flex items-center justify-center">
-            <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg border border-blue-100 mt-10">
-                <div class="flex items-center gap-3 mb-6 border-b pb-4">
-                    <i class="fas fa-info-circle text-2xl text-[#2C4A3B]"></i>
-                    <h2 class="text-xl font-extrabold text-[#2C4A3B]">Pay Registration Fee</h2>
-                </div>
-                
-                <p class="text-gray-600 text-sm mb-4">ඔබගේ ගිණුම සක්‍රීය කිරීමට ලියාපදිංචි ගාස්තුව ගෙවන්න<br>(Pay the fee to activate your account)</p>
-                <h3 class="text-3xl font-extrabold text-[#82B366] mb-6 text-center">Rs. 1,000.00</h3>
-                
-                <div class="bg-[#F1F5F9] p-4 rounded-lg mb-6 border border-gray-200">
-                    <p class="font-bold text-sm text-gray-700 mb-2">අපගේ බැංකු ගිණුම් විස්තර:</p>
-                    <p class="text-sm">Bank: Seylan Bank</p>
-                    <p class="text-sm">Account Name: Golden Hand</p>
-                    <p class="text-lg font-extrabold text-[#2C4A3B] my-1">14 901 361 84 8000 1</p>
-                    <p class="text-sm">Branch: Katugasthota</p>
+                            <div class="project-card glass-card rounded-[1.5rem] p-5 flex flex-col justify-between" onclick="window.openInvestModal('Medical Equipment')">
+                                <div>
+                                    <img src="https://images.unsplash.com/photo-1584362917165-526a968579e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-full h-32 object-cover rounded-xl mb-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-brand-blue text-lg leading-tight">Medical Equipment</h4>
+                                        <span class="bg-blue-100 text-brand-blue text-xs font-bold px-2 py-1 rounded-md">Phase 4</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Sales and rental service for wheelchairs, hospital beds, and oxygen concentrators.</p>
+                                </div>
+                                <button class="w-full bg-brand-blue text-white text-sm font-bold py-2.5 rounded-xl hover:bg-brand-green transition">Invest Now</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <form id="form-fee" onsubmit="window.submitFee(event)">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">මුදල් ගෙවා රිසිට්පත මෙහි අප්ලෝඩ් කරන්න:</label>
-                    <div onclick="document.getElementById('fee-receipt-file').click()" class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100 mb-6 relative">
-                        <i class="fas fa-plus-circle text-3xl text-gray-400 mb-2"></i>
-                        <p id="txt-fee-receipt" class="text-sm text-gray-600">Tap to select receipt</p>
-                        <input type="file" id="fee-receipt-file" required accept="image/*" class="hidden" onchange="document.getElementById('txt-fee-receipt').innerText='Selected'">
+                <!-- Investment History Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-10">
+                    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-brand-blue">My Investments</h3>
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full border border-green-200">Guaranteed 40% Return</span>
                     </div>
-                    <button type="submit" id="btn-submit-fee" class="w-full bg-[#0EA5E9] text-white font-bold py-3 rounded hover:bg-[#0284c7] transition shadow-md">Submit Receipt</button>
-                </form>
-                <button onclick="window.handleLogout()" class="w-full text-center text-sm font-bold text-[#C19B54] mt-4 underline hover:text-[#a88648]">Logout</button>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                    <th class="p-4 font-semibold">Project</th>
+                                    <th class="p-4 font-semibold">Investment Amount (Rs.)</th>
+                                    <th class="p-4 font-semibold text-brand-green">Annual Return (Rs.)</th>
+                                    <th class="p-4 font-semibold">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="investmentTableBody" class="divide-y divide-gray-100 text-sm">
+                                <tr>
+                                    <td colspan="4" class="p-8 text-center text-gray-400">Loading your investments...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-    </div> <!-- END APP CONTAINER -->
+    </div>
 
     <!-- ========================================== -->
-    <!-- REAL FIREBASE LOGIC INTEGRATION            -->
+    <!-- INVESTOR MODAL                             -->
+    <!-- ========================================== -->
+    <div id="investModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300" id="modalContent">
+            
+            <div class="bg-brand-blue p-6 text-white relative">
+                <button onclick="window.closeInvestModal()" class="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 p-1.5 rounded-full transition">
+                    <i class="ph-bold ph-x text-xl"></i>
+                </button>
+                <p class="text-brand-green font-bold text-xs tracking-widest uppercase mb-1">New Investment</p>
+                <h3 class="font-serif text-2xl font-bold" id="modalProjectName">Project Name</h3>
+            </div>
+            
+            <div class="p-6">
+                <form id="investmentForm" onsubmit="window.submitInvestment(event)">
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Amount (Rs.)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">Rs.</span>
+                            <input type="number" id="investAmount" min="10000" step="1000" required oninput="window.calculateReturn()" class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none font-bold text-lg text-brand-blue bg-gray-50 focus:bg-white transition" placeholder="100000">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2"><i class="ph-fill ph-info"></i> Minimum investment: Rs. 10,000</p>
+                    </div>
+
+                    <!-- NEW: CONTACT FIELDS (Shown only if not saved in profile yet) -->
+                    <div id="investor-contact-fields" class="hidden space-y-4 mb-6 border-t border-gray-100 pt-4">
+                        <p class="text-xs font-bold text-brand-blue uppercase tracking-widest">Your Contact Details</p>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Phone Number</label>
+                            <input type="tel" id="investPhone" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white" placeholder="07X XXX XXXX">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Address</label>
+                            <input type="text" id="investAddress" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-green outline-none transition bg-gray-50 focus:bg-white" placeholder="Enter your full address">
+                        </div>
+                        <p class="text-[10px] text-gray-400">We will save these securely in your profile for future use.</p>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-semibold text-gray-600">Expected Annual Return</span>
+                            <span class="bg-brand-green text-white text-[10px] px-2 py-0.5 rounded-full font-bold">40% Rate</span>
+                        </div>
+                        <h4 class="text-2xl font-bold text-brand-green" id="modalReturnDisplay">Rs. 0</h4>
+                        <p class="text-xs text-gray-500 mt-1">Payable annually upon project acceptance.</p>
+                    </div>
+
+                    <button type="submit" id="btn-submit-investment" class="w-full bg-brand-green text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition shadow-lg shadow-green-200 flex justify-center items-center gap-2">
+                        <i class="ph-bold ph-check-circle text-lg"></i> Confirm Investment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- FIREBASE & JAVASCRIPT LOGIC                -->
     <!-- ========================================== -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, addDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Your Firebase Web App Config
+        // User's provided Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDjLaQSVtIk8w3nWve7PF5PwbtxGzjIogI",
             authDomain: "care-2a20d.firebaseapp.com",
             projectId: "care-2a20d",
             storageBucket: "care-2a20d.firebasestorage.app",
             messagingSenderId: "283184840115",
-            appId: "1:283184840115:web:b6ac6008156bba31461fc6",
-            measurementId: "G-JSEQW56Y4Z"
+            appId: "1:283184840115:web:b6ac6008156bba31461fc6"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const analytics = getAnalytics(app);
-        const fbAppId = '1:283184840115:web:b6ac6008156bba31461fc6';
 
-        let pendingGoogleUser = null; // 🌟 Store Google user details temporarily if they are new
+        // Utility: Number formatter
+        window.formatMoney = (amount) => 'Rs. ' + parseInt(amount).toLocaleString('en-US');
 
-        // 1. Load Top Caregivers Function
-        const loadTopCaregivers = async () => {
-            try {
-                const usersSnap = await getDocs(collection(db, "users"));
-                let caregivers = [];
-                usersSnap.forEach(d => {
-                    const u = d.data();
-                    if (u.role === 'CAREGIVER' && u.kycStatus === 'APPROVED') {
-                        caregivers.push(u);
-                    }
-                });
-                
-                caregivers.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                const topCaregivers = caregivers.slice(0, 3); // Get top 3
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-                const reviewsSnap = await getDocs(collection(db, "reviews"));
-                let allReviews = [];
-                reviewsSnap.forEach(d => allReviews.push(d.data()));
-
-                const container = document.getElementById('top-caregivers-grid');
-                if (!container) return;
-                
-                if (topCaregivers.length === 0) {
-                    container.innerHTML = `<div class="col-span-3 text-center py-10 text-gray-500">දැනට සේවකයින් නොමැත.</div>`;
-                    return;
-                }
-                
-                container.innerHTML = '';
-                
-                topCaregivers.forEach(cg => {
-                    const cgReviews = allReviews.filter(r => r.caregiverId === cg.id);
-                    const topReview = cgReviews.length > 0 ? cgReviews[0] : null;
-                    
-                    const rating = (cg.rating || 0).toFixed(1);
-                    const reviewText = topReview ? `"${topReview.comment}"` : "ඉතා හොඳ සේවාවක් සපයයි.";
-                    const reviewerName = topReview ? `- ${topReview.clientName}` : "";
-                    
-                    let imgHtml = '';
-                    if (cg.profileImageUrl) {
-                        imgHtml = `<img src="${cg.profileImageUrl}" class="w-24 h-24 rounded-full object-cover border-4 border-[#C19B54] mb-4 shadow-md">`;
-                    } else {
-                        const initial = cg.name ? cg.name.charAt(0).toUpperCase() : '?';
-                        imgHtml = `<div class="w-24 h-24 rounded-full bg-[#E2E8F0] flex items-center justify-center border-4 border-[#C19B54] mb-4 shadow-md"><span class="text-3xl font-bold text-gray-500">${initial}</span></div>`;
-                    }
-
-                    const card = `
-                        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center text-center transform transition duration-300 hover:-translate-y-2 w-full max-w-[300px]">
-                            ${imgHtml}
-                            <h3 class="text-lg font-bold text-[#10213b]">${cg.name}</h3>
-                            <div class="flex items-center justify-center gap-1 my-2 text-[#F59E0B]">
-                                <span class="font-bold text-gray-800 mr-1">${rating}</span>
-                                <i class="fas fa-star"></i>
-                                <span class="text-xs text-gray-500 ml-1">(${cg.reviewCount || 0} reviews)</span>
-                            </div>
-                            <p class="text-[12px] text-gray-600 italic mt-3 min-h-[40px]">
-                                ${reviewText}
-                                <br><span class="font-semibold text-[#82B366] text-[10px] block mt-1">${reviewerName}</span>
-                            </p>
-                        </div>
-                    `;
-                    container.innerHTML += card;
-                });
-            } catch (err) {
-                console.error("Error loading top caregivers:", err);
-            }
-        };
-
-        // Initialize Anonymous Auth for Live Chat and Session isolation
-        const initAuth = async () => {
-            // Generate a unique session ID for anonymous users per browser tab session
-            let anonSessionId = sessionStorage.getItem('chat_tab_session_id');
-            if (!anonSessionId) {
-                anonSessionId = crypto.randomUUID();
-                sessionStorage.setItem('chat_tab_session_id', anonSessionId);
-            }
-
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else if (!auth.currentUser) {
-                await signInAnonymously(auth);
-            }
-            
-            // Load the new section data
-            loadTopCaregivers();
-        };
-        initAuth();
-
-        // Helper for Image Compression
-        const compressImage = (file) => new Promise((resolve, reject) => {
-            if (!file) return resolve(null);
-            if (file.type === "application/pdf") {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-                return;
-            }
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_SIZE = 600;
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > height) {
-                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
-                    } else {
-                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                    }
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.5));
-                };
-                img.onerror = error => reject(error);
-            };
-            reader.onerror = error => reject(error);
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) navbar.classList.add('shadow-md');
+            else navbar.classList.remove('shadow-md');
         });
 
-        // ------------------ Routing & View Logic ------------------ //
-        window.showPage = (pageId) => {
-            const pages = ['main-landing-page', 'auth-page', 'kyc-client-page', 'kyc-caregiver-page', 'pending-page', 'approved-page', 'fee-page'];
-            pages.forEach(id => document.getElementById(id).classList.add('hidden'));
-            document.getElementById(pageId).classList.remove('hidden');
+        // ------------------ Routing & UI Functions ------------------ //
+        window.showMainPage = () => {
+            document.getElementById('main-page-view').classList.remove('hidden');
+            document.getElementById('investor-page-view').classList.add('hidden');
+            document.getElementById('investor-page-view').classList.remove('flex');
+            mobileMenu.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        window.goToSection = (sectionId) => {
-            if (auth.currentUser && !auth.currentUser.isAnonymous) {
-                const pg = document.getElementById('pending-page');
-                const fg = document.getElementById('fee-page');
-                const ap = document.getElementById('approved-page');
-                if (!pg.classList.contains('hidden') || !fg.classList.contains('hidden') || !ap.classList.contains('hidden')) {
-                    alert("කරුණාකර ගිණුම් කටයුතු අවසන් කරන්න. / Please complete account setup.");
-                    return;
-                }
-            }
-            window.showPage('main-landing-page');
-            setTimeout(() => {
-                const el = document.getElementById(sectionId);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
-
-        window.setAuthMode = (mode) => {
-            if (mode === 'login') {
-                document.getElementById('login-form').classList.remove('hidden');
-                document.getElementById('register-form').classList.add('hidden');
-                document.getElementById('tab-login').className = "flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition";
-                document.getElementById('tab-register').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
-            } else {
-                document.getElementById('login-form').classList.add('hidden');
-                document.getElementById('register-form').classList.remove('hidden');
-                document.getElementById('tab-register').className = "flex-1 py-3 font-bold text-[#C19B54] border-b-2 border-[#C19B54] transition";
-                document.getElementById('tab-login').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
-            }
-        }
-
-        const updateNavForUser = (user, userData) => {
-            const authContainer = document.getElementById('nav-auth-container');
-            if (user && !user.isAnonymous && userData) {
-                authContainer.innerHTML = `
-                    <div class="ml-4 flex items-center gap-3">
-                        <span class="text-[#2C4A3B] font-bold text-[12px]">Hi, ${userData.name.split(' ')[0]}</span>
-                        <a href="javascript:void(0)" onclick="window.handleLogout()" class="flex items-center gap-1.5 text-white bg-red-600 px-2.5 py-1.5 hover:bg-red-700 transition rounded-sm text-[11px] font-bold">
-                            <i class="fas fa-sign-out-alt"></i> LOGOUT
-                        </a>
-                    </div>`;
-                window.currentUserName = userData.name;
-            } else {
-                authContainer.innerHTML = `
-                    <a href="javascript:void(0)" onclick="window.showPage('auth-page'); window.setAuthMode('login');" class="ml-4 flex items-center gap-1.5 text-[#2C4A3B] border border-[#2C4A3B] px-2.5 py-1.5 hover:bg-[#2C4A3B] hover:text-white transition rounded-sm">
-                        <i class="fas fa-user"></i> LOGIN / REGISTER
-                    </a>`;
-                window.currentUserName = "Visitor";
-            }
-        }
-
-        // Toggle Chat Box
-        window.toggleChat = () => {
-            const win = document.getElementById('chat-window');
-            win.style.display = (win.style.display === 'flex' ? 'none' : 'flex');
         };
 
-        // ------------------ Auth & Chat Listeners ------------------ //
-        let userDocUnsubscribe = null;
-        let chatUnsubscribe = null;
+        window.showInvestorPortal = () => {
+            document.getElementById('main-page-view').classList.add('hidden');
+            document.getElementById('investor-page-view').classList.remove('hidden');
+            document.getElementById('investor-page-view').classList.add('flex');
+            mobileMenu.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                } catch(e) {
-                    console.error("Auth initialization error:", e);
-                }
-                return; 
+            // Ensure correct view based on auth state
+            if (auth.currentUser && window.currentUserData?.role === 'INVESTOR') {
+                document.getElementById('investor-auth-section').classList.add('hidden');
+                document.getElementById('investor-dashboard-section').classList.remove('hidden');
+                document.getElementById('investor-dashboard-section').classList.add('flex');
+            } else {
+                document.getElementById('investor-auth-section').classList.remove('hidden');
+                document.getElementById('investor-dashboard-section').classList.add('hidden');
+                document.getElementById('investor-dashboard-section').classList.remove('flex');
             }
+        };
 
-            // Initialize Live Chat listener for this session
-            if (chatUnsubscribe) chatUnsubscribe();
-            const messagesRef = collection(db, 'artifacts', fbAppId, 'public', 'data', 'messages');
-            
-            chatUnsubscribe = onSnapshot(messagesRef, (snapshot) => {
-                const msgs = [];
-                snapshot.forEach(doc => msgs.push(doc.data()));
-                
-                // Use Tab Session ID for Anonymous, otherwise Use UID
-                const chatSessionId = user.isAnonymous ? sessionStorage.getItem('chat_tab_session_id') : user.uid;
-                
-                const myMsgs = msgs.filter(m => m.sessionId === chatSessionId).sort((a,b) => a.timestamp - b.timestamp);
-                
-                const chatBox = document.getElementById('chat-messages');
-                if(!chatBox) return;
-                
-                chatBox.innerHTML = '<div class="text-left"><span class="bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm">Hello! How can we help you today? 👋<br><span class="text-[9px] text-gray-400 mt-1 block">Golden Hand Support</span></span></div>';
-                
-                myMsgs.forEach(m => {
-                    const div = document.createElement('div');
-                    div.className = m.isAdmin ? "text-left" : "text-right";
-                    const span = document.createElement('span');
-                    span.className = m.isAdmin 
-                        ? "bg-white border border-gray-200 text-gray-800 text-[12px] px-3 py-2 rounded-br-xl rounded-bl-xl rounded-tr-xl inline-block shadow-sm max-w-[85%]" 
-                        : "bg-[#10213b] text-white text-[12px] px-3 py-2 rounded-bl-xl rounded-br-xl rounded-tl-xl inline-block shadow-sm max-w-[85%]";
-                    span.innerHTML = m.text;
-                    div.appendChild(span);
-                    chatBox.appendChild(div);
-                });
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
+        // Main Page Form Tabs
+        window.switchMainTab = (tabType) => {
+            const btnClient = document.getElementById('btn-client');
+            const btnStaff = document.getElementById('btn-staff');
+            const clientForm = document.getElementById('clientForm');
+            const staffForm = document.getElementById('staffForm');
 
-            if (user.isAnonymous) {
-                updateNavForUser(user, null);
-                // Only redirect if not already on the auth page to avoid interrupting login
-                if(document.getElementById('auth-page').classList.contains('hidden')) {
-                    window.showPage('main-landing-page');
-                }
-                return;
+            if (tabType === 'client') {
+                btnClient.className = 'flex-1 py-3 text-sm md:text-base rounded-lg tab-active transition-all';
+                btnStaff.className = 'flex-1 py-3 text-sm md:text-base rounded-lg tab-inactive transition-all';
+                clientForm.classList.remove('hidden');
+                staffForm.classList.add('hidden');
+            } else {
+                btnStaff.className = 'flex-1 py-3 text-sm md:text-base rounded-lg tab-active transition-all';
+                btnClient.className = 'flex-1 py-3 text-sm md:text-base rounded-lg tab-inactive transition-all';
+                staffForm.classList.remove('hidden');
+                clientForm.classList.add('hidden');
             }
+        };
 
-            if (userDocUnsubscribe) userDocUnsubscribe();
-            userDocUnsubscribe = onSnapshot(doc(db, "users", user.uid), async (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    updateNavForUser(user, data);
+        // Investor Portal Form Tabs
+        window.setInvestorAuthMode = (mode) => {
+            if (mode === 'login') {
+                document.getElementById('investor-login-form').classList.remove('hidden');
+                document.getElementById('investor-register-form').classList.add('hidden');
+                document.getElementById('inv-tab-login').className = "flex-1 py-3 font-bold text-brand-green border-b-2 border-brand-green transition";
+                document.getElementById('inv-tab-register').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
+            } else {
+                document.getElementById('investor-login-form').classList.add('hidden');
+                document.getElementById('investor-register-form').classList.remove('hidden');
+                document.getElementById('inv-tab-register').className = "flex-1 py-3 font-bold text-brand-green border-b-2 border-brand-green transition";
+                document.getElementById('inv-tab-login').className = "flex-1 py-3 font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
+            }
+        };
 
-                    // Routing based on user state
-                    if (data.isVerified) {
-                        window.showPage('main-landing-page');
-                    } else if (data.kycStatus === "FEE_PENDING") {
-                        window.showPage('fee-page');
-                    } else if (data.kycStatus === "PENDING") {
-                        window.showPage('pending-page');
-                    } else if (data.kycStatus === "APPROVED") {
-                        if (!data.isVerified) {
-                            window.showPage('approved-page');
-                        } else {
-                            window.showPage('main-landing-page');
-                        }
-                    } else {
-                        if (data.role === "CLIENT") window.showPage('kyc-client-page');
-                        else window.showPage('kyc-caregiver-page');
-                    }
-                } else {
-                    // If doc doesn't exist, it might be a pending Google login waiting for role selection.
-                    // Do nothing here, let the modal handle it.
-                    updateNavForUser(user, null);
-                }
-            });
-        });
-
-        // ------------------ Live Chat Function ------------------ //
-        window.sendChatMessage = async (e) => {
+        // ------------------ Firebase Interactions: Main Site Forms ------------------ //
+        window.submitClientBooking = async (e) => {
             e.preventDefault();
-            const user = auth.currentUser;
-            if (!user) return;
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if(!text) return;
-            input.value = '';
-
-            const chatSessionId = user.isAnonymous ? sessionStorage.getItem('chat_tab_session_id') : user.uid;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Processing..."; btn.disabled = true;
 
             try {
-                await setDoc(doc(db, 'artifacts', fbAppId, 'public', 'data', 'messages', crypto.randomUUID()), {
-                    text: text,
-                    senderId: chatSessionId,
-                    sessionId: chatSessionId,
-                    senderName: window.currentUserName || "Visitor",
-                    isAdmin: false,
+                await addDoc(collection(db, "website_leads"), {
+                    type: 'CLIENT',
+                    name: document.getElementById('clientName').value,
+                    phone: document.getElementById('clientPhone').value,
+                    service: document.getElementById('clientService').value,
+                    address: document.getElementById('clientAddress').value,
+                    status: 'NEW',
                     timestamp: Date.now()
                 });
-            } catch(err) {
-                console.error(err);
+                
+                e.target.reset();
+                const msg = document.getElementById('mainSuccessMessage');
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 5000);
+            } catch (err) {
+                alert("Error submitting booking: " + err.message);
+            } finally {
+                btn.innerHTML = originalText; btn.disabled = false;
             }
         };
 
-        // ------------------ Auth Functions ------------------ //
-        window.handleLogin = async (e) => {
+        window.submitStaffApplication = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-login');
-            btn.innerHTML = "Please wait..."; btn.disabled = true;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Processing..."; btn.disabled = true;
+
             try {
-                await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
-                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat when real user logs in
+                await addDoc(collection(db, "website_leads"), {
+                    type: 'STAFF',
+                    name: document.getElementById('staffName').value,
+                    phone: document.getElementById('staffPhone').value,
+                    position: document.getElementById('staffPosition').value,
+                    experience: document.getElementById('staffExp').value,
+                    message: document.getElementById('staffMessage').value,
+                    status: 'NEW',
+                    timestamp: Date.now()
+                });
+                
+                e.target.reset();
+                const msg = document.getElementById('mainSuccessMessage');
+                document.getElementById('mainSuccessText').innerText = "Application submitted successfully!";
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 5000);
+            } catch (err) {
+                alert("Error submitting application: " + err.message);
+            } finally {
+                btn.innerHTML = originalText; btn.disabled = false;
+            }
+        };
+
+        // ------------------ Firebase Interactions: Investor Portal ------------------ //
+        let userDocUnsubscribe = null;
+        let investmentsUnsubscribe = null;
+
+        // Listen for Authentication State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (userDocUnsubscribe) userDocUnsubscribe();
+                userDocUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        window.currentUserData = data;
+                        
+                        if (data.role === "INVESTOR") {
+                            document.getElementById('investor-name-display').innerText = data.name;
+                            document.getElementById('investor-auth-section').classList.add('hidden');
+                            document.getElementById('investor-dashboard-section').classList.remove('hidden');
+                            document.getElementById('investor-dashboard-section').classList.add('flex');
+                            listenToInvestments(user.uid);
+                        }
+                    }
+                });
+            } else {
+                window.currentUserData = null;
+                document.getElementById('investor-auth-section').classList.remove('hidden');
+                document.getElementById('investor-dashboard-section').classList.add('hidden');
+                document.getElementById('investor-dashboard-section').classList.remove('flex');
+            }
+        });
+
+        window.handleInvestorLogin = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-inv-login');
+            btn.innerHTML = "Authenticating..."; btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('inv-login-email').value, document.getElementById('inv-login-password').value);
+                // State observer will route to dashboard
             } catch (err) {
                 alert(err.message);
-                btn.innerHTML = "Sign In"; btn.disabled = false;
+            } finally {
+                btn.innerHTML = `Secure Sign In <i class="ph-bold ph-arrow-right"></i>`; 
+                btn.disabled = false;
             }
-        }
+        };
 
-        window.handleRegister = async (e) => {
+        window.handleInvestorRegister = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-register');
-            btn.innerHTML = "Creating Account..."; btn.disabled = true;
+            const btn = document.getElementById('btn-inv-register');
+            btn.innerHTML = "Applying..."; btn.disabled = true;
             try {
-                const name = document.getElementById('reg-name').value;
-                const email = document.getElementById('reg-email').value;
-                const pass = document.getElementById('reg-password').value;
-                const role = document.getElementById('role-caregiver').checked ? 'CAREGIVER' : 'CLIENT';
+                const name = document.getElementById('inv-reg-name').value;
+                const email = document.getElementById('inv-reg-email').value;
+                const pass = document.getElementById('inv-reg-password').value;
 
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+                // Add user to Firestore
                 await setDoc(doc(db, "users", userCred.user.uid), {
                     id: userCred.user.uid,
                     name: name,
                     email: email,
-                    role: role,
-                    isVerified: false,
-                    kycStatus: "NONE",
-                    walletBalance: 0.0
-                });
-                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
-            } catch (err) {
-                alert(err.message);
-                btn.innerHTML = "Create Account"; btn.disabled = false;
-            }
-        }
-
-        // 🌟 NEW: Google Login with Role Selection
-        window.handleGoogleLogin = async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                const docSnap = await getDoc(doc(db, "users", user.uid));
-                
-                if (!docSnap.exists()) {
-                    // New Google User - show role selection modal
-                    pendingGoogleUser = {
-                        id: user.uid,
-                        name: user.displayName || "No Name",
-                        email: user.email || ""
-                    };
-                    document.getElementById('google-role-modal').classList.remove('hidden');
-                } else {
-                    // Existing User - already has a role, just clear anon chat
-                    sessionStorage.removeItem('chat_tab_session_id');
-                }
-            } catch (err) {
-                alert(err.message);
-            }
-        }
-
-        // 🌟 NEW: Submit Role for New Google User
-        window.submitGoogleRole = async (e) => {
-            e.preventDefault();
-            if (!pendingGoogleUser) return;
-
-            const btn = document.getElementById('btn-google-role');
-            btn.innerHTML = "Creating Account..."; btn.disabled = true;
-
-            try {
-                const selectedRole = document.querySelector('input[name="google-role"]:checked').value;
-                
-                await setDoc(doc(db, "users", pendingGoogleUser.id), {
-                    id: pendingGoogleUser.id,
-                    name: pendingGoogleUser.name,
-                    email: pendingGoogleUser.email,
-                    role: selectedRole, 
-                    isVerified: false,
-                    kycStatus: "NONE",
-                    walletBalance: 0.0
-                });
-                
-                sessionStorage.removeItem('chat_tab_session_id'); // Clear anon chat
-                document.getElementById('google-role-modal').classList.add('hidden');
-                pendingGoogleUser = null; // Clear pending state
-                
-                // The onSnapshot listener will automatically detect the new user doc and route to KYC
-            } catch (err) {
-                alert(err.message);
-                btn.innerHTML = "Continue to Dashboard"; btn.disabled = false;
-            }
-        }
-
-        window.handleLogout = async () => {
-            await signOut(auth);
-            sessionStorage.removeItem('chat_tab_session_id'); // Regenerate new anon session
-            await signInAnonymously(auth);
-        }
-
-        window.completeApproval = async () => {
-            try {
-                if(auth.currentUser) {
-                    await updateDoc(doc(db, "users", auth.currentUser.uid), { isVerified: true });
-                }
-            } catch(e) { console.error(e); }
-            window.showPage('main-landing-page');
-        }
-
-        // ------------------ KYC & Fee Functions ------------------ //
-        window.submitClientKyc = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-client');
-            
-            try {
-                const f1Input = document.getElementById('client-nic-front').files[0];
-                const f2Input = document.getElementById('client-nic-back').files[0];
-                const f3Input = document.getElementById('client-selfie').files[0];
-                
-                if (!f1Input || !f2Input || !f3Input) {
-                    alert("කරුණාකර NIC සහ Selfie ඡායාරූප සියල්ල අප්ලෝඩ් කරන්න.");
-                    return;
-                }
-                
-                btn.innerHTML = "Uploading..."; btn.disabled = true;
-
-                const f1 = await compressImage(f1Input);
-                const f2 = await compressImage(f2Input);
-                const f3 = await compressImage(f3Input);
-
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    kycStatus: "FEE_PENDING",
-                    nicNumber: document.getElementById('client-nic').value,
-                    dob: document.getElementById('client-dob').value,
-                    address: document.getElementById('client-address').value,
-                    serviceAddress: document.getElementById('client-service-address').value || document.getElementById('client-address').value,
-                    billingName: document.getElementById('client-billing-name').value,
-                    billingAddress: document.getElementById('client-billing-address').value,
-                    nicFrontUrl: f1 || "",
-                    nicBackUrl: f2 || "",
-                    selfieUrl: f3 || ""
-                });
-                
-                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
-            } catch (err) {
-                alert(err.message);
-                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
-            }
-        }
-
-        window.submitCaregiverKyc = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-cg');
-            
-            try {
-                const reqFiles = ['cg-nic-front', 'cg-nic-back', 'cg-selfie', 'cg-bankbook'];
-                for(let id of reqFiles) {
-                    if(!document.getElementById(id).files[0]) {
-                        alert("කරුණාකර NIC, Selfie සහ Bank Book අනිවාර්යයෙන් අප්ලෝඩ් කරන්න.");
-                        return;
-                    }
-                }
-                
-                btn.innerHTML = "Uploading..."; btn.disabled = true;
-
-                const fNicF = await compressImage(document.getElementById('cg-nic-front').files[0]);
-                const fNicB = await compressImage(document.getElementById('cg-nic-back').files[0]);
-                const fSelfie = await compressImage(document.getElementById('cg-selfie').files[0]);
-                const fPol = await compressImage(document.getElementById('cg-police').files[0]);
-                const fCert = await compressImage(document.getElementById('cg-cert').files[0]);
-                const fBank = await compressImage(document.getElementById('cg-bankbook').files[0]);
-
-                const prefTypes = [];
-                if(document.getElementById('cg-livein').checked) prefTypes.push("Live-in");
-                if(document.getElementById('cg-liveout').checked) prefTypes.push("Live-out");
-
-                const salary = parseFloat(document.getElementById('cg-salary').value) || 0.0;
-
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    kycStatus: "PENDING",
-                    nicNumber: document.getElementById('cg-nic').value,
-                    gender: document.getElementById('cg-gender').value,
-                    dob: document.getElementById('cg-dob').value,
-                    address: document.getElementById('cg-address').value,
-                    experienceYears: document.getElementById('cg-exp').value,
-                    specialSkills: document.getElementById('cg-skills').value,
-                    chronicIllnesses: document.getElementById('cg-illness').value,
-                    vaccinationStatus: document.getElementById('cg-vaccine').value,
-                    bankName: document.getElementById('cg-bank-name').value,
-                    bankAccountNumber: document.getElementById('cg-bank-acc').value,
-                    bankBranch: document.getElementById('cg-bank-branch').value,
-                    expectedSalary: salary,
-                    hourlyRate: salary,
-                    preferredServiceTypes: prefTypes,
-                    nicFrontUrl: fNicF || "",
-                    nicBackUrl: fNicB || "",
-                    selfieUrl: fSelfie || "",
-                    profileImageUrl: fSelfie || "",
-                    policeClearanceUrl: fPol || "",
-                    certificateUrl: fCert || "",
-                    bankBookUrl: fBank || ""
-                });
-                
-                alert("සාර්ථකව අප්ලෝඩ් කරන ලදී. Admin අනුමත කරන තෙක් රැඳී සිටින්න.");
-                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
-            } catch (err) {
-                alert(err.message);
-                btn.innerHTML = "අවසන් කරන්න (Submit)"; btn.disabled = false;
-            }
-        }
-
-        // ------------------ Fee Function ------------------ //
-        window.submitFee = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-fee');
-            
-            try {
-                const feeFile = document.getElementById('fee-receipt-file').files[0];
-                if (!feeFile) {
-                    alert("කරුණාකර රිසිට්පත අප්ලෝඩ් කරන්න.");
-                    return;
-                }
-                
-                btn.innerHTML = "Uploading..."; btn.disabled = true;
-                const receiptB64 = await compressImage(feeFile);
-
-                await setDoc(doc(db, "transactions", crypto.randomUUID()), {
-                    userId: auth.currentUser.uid,
-                    amount: 1000.0,
-                    type: "FEE",
-                    description: "Client Registration Fee",
-                    receiptUrl: receiptB64 || "",
+                    role: 'INVESTOR',
+                    status: 'Active', 
                     timestamp: Date.now()
                 });
-                
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    kycStatus: "PENDING"
-                });
-                
-                alert("Payment receipt submitted successfully! Please wait for Admin approval.");
-                btn.innerHTML = "Submit Receipt"; btn.disabled = false;
             } catch (err) {
                 alert(err.message);
-                btn.innerHTML = "Submit Receipt"; btn.disabled = false;
+            } finally {
+                btn.innerHTML = "Apply as Investor"; 
+                btn.disabled = false;
             }
+        };
+
+        window.handleInvestorLogout = async () => {
+            if(investmentsUnsubscribe) investmentsUnsubscribe();
+            if(userDocUnsubscribe) userDocUnsubscribe();
+            await signOut(auth);
+            alert("Successfully logged out.");
+        };
+
+        // ------------------ INVESTOR Operations (Dashboard) ------------------ //
+        let selectedProject = '';
+        const modal = document.getElementById('investModal');
+        const modalContent = document.getElementById('modalContent');
+
+        window.openInvestModal = (projectName) => {
+            selectedProject = projectName;
+            document.getElementById('modalProjectName').innerText = projectName;
+            document.getElementById('investAmount').value = '';
+            document.getElementById('modalReturnDisplay').innerText = 'Rs. 0';
+            
+            // Check if contact info exists, if not, show fields to capture them
+            const contactFields = document.getElementById('investor-contact-fields');
+            const phoneInput = document.getElementById('investPhone');
+            const addressInput = document.getElementById('investAddress');
+
+            if (window.currentUserData && !window.currentUserData.phone) {
+                contactFields.classList.remove('hidden');
+                phoneInput.required = true;
+                addressInput.required = true;
+                phoneInput.value = '';
+                addressInput.value = '';
+            } else {
+                contactFields.classList.add('hidden');
+                phoneInput.required = false;
+                addressInput.required = false;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        };
+
+        window.closeInvestModal = () => {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        };
+
+        window.calculateReturn = () => {
+            const amount = parseFloat(document.getElementById('investAmount').value) || 0;
+            const annualReturn = amount * 0.40; // 40% Return
+            document.getElementById('modalReturnDisplay').innerText = window.formatMoney(annualReturn);
+        };
+
+        window.submitInvestment = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-investment');
+            btn.innerHTML = "Processing..."; btn.disabled = true;
+
+            const amount = parseFloat(document.getElementById('investAmount').value);
+            const annualReturn = amount * 0.40;
+            const user = auth.currentUser;
+
+            const contactFields = document.getElementById('investor-contact-fields');
+            let phone = window.currentUserData?.phone || "";
+            let address = window.currentUserData?.address || "";
+            let updateProfile = false;
+
+            // If contact fields were shown, grab those values to update the user profile
+            if (!contactFields.classList.contains('hidden')) {
+                phone = document.getElementById('investPhone').value;
+                address = document.getElementById('investAddress').value;
+                updateProfile = true;
+            }
+
+            try {
+                // Save investment under the user's sub-collection
+                const invRef = collection(db, "users", user.uid, "investments");
+                await addDoc(invRef, {
+                    project: selectedProject,
+                    amount: amount,
+                    returnAmount: annualReturn,
+                    status: 'Pending Review',
+                    timestamp: Date.now()
+                });
+
+                // Update user's profile with phone and address if entered
+                if (updateProfile) {
+                    await updateDoc(doc(db, "users", user.uid), {
+                        phone: phone,
+                        address: address,
+                        updatedAt: Date.now()
+                    });
+                }
+                
+                window.closeInvestModal();
+                alert(`Successfully submitted investment request for ${selectedProject}. We will review and contact you shortly.`);
+            } catch (err) {
+                console.error(err);
+                alert("Error submitting investment. Please try again.");
+            } finally {
+                btn.innerHTML = `<i class="ph-bold ph-check-circle text-lg"></i> Confirm Investment`;
+                btn.disabled = false;
+            }
+        };
+
+        // Fetch Investments Real-time
+        function listenToInvestments(uid) {
+            if(investmentsUnsubscribe) investmentsUnsubscribe();
+            
+            const invRef = collection(db, "users", uid, "investments");
+            investmentsUnsubscribe = onSnapshot(invRef, (snapshot) => {
+                const tableBody = document.getElementById('investmentTableBody');
+                let totalInvested = 0;
+                let totalReturn = 0;
+                let rowsHTML = '';
+
+                if (snapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400 font-medium">No investments yet. Click on a project roadmap above to start investing.</td></tr>`;
+                    document.getElementById('statTotalInvested').innerText = "Rs. 0";
+                    document.getElementById('statAnnualReturn').innerText = "Rs. 0";
+                    return;
+                }
+
+                // Sorting internally
+                const dataArray = [];
+                snapshot.forEach(doc => dataArray.push(doc.data()));
+                dataArray.sort((a,b) => b.timestamp - a.timestamp);
+
+                dataArray.forEach(inv => {
+                    totalInvested += inv.amount;
+                    totalReturn += inv.returnAmount;
+
+                    let statusClass = inv.status === 'Accepted' ? 'bg-green-100 text-green-700 border-green-200' : (inv.status === 'Rejected' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-yellow-100 text-yellow-700 border-yellow-200');
+                    
+                    rowsHTML += `
+                        <tr class="hover:bg-gray-50 transition border-b border-gray-50">
+                            <td class="p-4 font-bold text-brand-blue">${inv.project}</td>
+                            <td class="p-4 font-semibold text-gray-700">${window.formatMoney(inv.amount)}</td>
+                            <td class="p-4 font-bold text-brand-green">${window.formatMoney(inv.returnAmount)} <span class="text-[10px] text-gray-400 font-normal">/yr</span></td>
+                            <td class="p-4">
+                                <span class="${statusClass} text-xs font-bold px-3 py-1.5 rounded-full border inline-flex items-center gap-1">
+                                    <i class="ph-fill ph-clock"></i> ${inv.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableBody.innerHTML = rowsHTML;
+                document.getElementById('statTotalInvested').innerText = window.formatMoney(totalInvested);
+                document.getElementById('statAnnualReturn').innerText = window.formatMoney(totalReturn);
+            }, (error) => {
+                console.error("Error fetching investments:", error);
+            });
         }
     </script>
 </body>
